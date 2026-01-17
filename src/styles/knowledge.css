@@ -1,0 +1,63 @@
+.knowledge {
+  margin-top: 0px;
+}
+
+.knowledge-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.knowledge-sources {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+}
+
+.knowledge-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.knowledge-list li {
+  word-break: break-word;
+}
+
+.knowledge-list a {
+  color: #4338ca;
+  text-decoration: none;
+}
+
+.knowledge-list a:hover {
+  text-decoration: underline;
+}
+
+.knowledge-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.knowledge-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: #475569;
+}
+
+.knowledge-form input {
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  background: #fff;
+}

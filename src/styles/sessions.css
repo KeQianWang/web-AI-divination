@@ -1,0 +1,56 @@
+.session-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+}
+
+.session-item {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: nowrap;
+  border-radius: 12px;
+  padding: 6px 8px;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.session-item.active {
+  border-color: rgba(79, 70, 229, 0.4);
+  background: rgba(79, 70, 229, 0.08);
+}
+
+.session-main {
+  border: none;
+  background: transparent;
+  text-align: left;
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.session-title {
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.session-meta {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.session-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.session-actions .ghost {
+  padding: 4px 8px;
+  font-size: 12px;
+}

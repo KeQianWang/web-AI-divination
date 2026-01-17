@@ -1,0 +1,136 @@
+.chat-panel {
+  min-height: 0;
+}
+
+.chat-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-right: 6px;
+}
+
+.message {
+  display: flex;
+}
+
+.message.user {
+  justify-content: flex-end;
+}
+
+.message.assistant {
+  justify-content: flex-start;
+}
+
+.message-bubble {
+  max-width: 80%;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 12px 14px;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+}
+
+.message-content {
+  word-break: break-word;
+}
+
+.message.user .message-bubble {
+  background: #4f46e5;
+  color: #fff;
+  border-color: transparent;
+}
+
+.message-meta {
+  display: flex;
+  gap: 8px;
+  font-size: 11px;
+  margin-top: 6px;
+  color: #64748b;
+}
+
+.message.user .message-meta {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.tag {
+  background: rgba(79, 70, 229, 0.12);
+  color: #3730a3;
+  padding: 2px 6px;
+  border-radius: 999px;
+}
+
+.typing-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.typing-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.35;
+  animation: typing-bounce 1s infinite ease-in-out;
+}
+
+.typing-dots span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.typing-dots span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes typing-bounce {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateY(-2px);
+  }
+}
+
+.composer {
+  border-top: 1px solid rgba(148, 163, 184, 0.3);
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.composer textarea {
+  resize: none;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  background: #fff;
+}
+
+.composer-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.composer-row textarea {
+  flex: 1;
+}
+
+.composer-row button {
+  padding: 10px 16px;
+  white-space: nowrap;
+}
