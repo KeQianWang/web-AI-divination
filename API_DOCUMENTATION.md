@@ -258,13 +258,13 @@ Authorization: Bearer <access_token>
 
 **SSE 事件流示例**:
 ```
-data: {"type": "token", "content": "根据"}
+data: {"type": "content", "content": "與", "session_id": "550e8400-e29b-41d4-a716-446655440000", "mood": "default", "voice_style": "chat"}
 
-data: {"type": "token", "content": "你的"}
+data: {"type": "content", "content": "算", "session_id": "550e8400-e29b-41d4-a716-446655440000", "mood": "default", "voice_style": "chat"}
 
-data: {"type": "token", "content": "生辰八字"}
+data: {"type": "content", "content": "命", "session_id": "550e8400-e29b-41d4-a716-446655440000", "mood": "default", "voice_style": "chat"}
 
-data: {"type": "done", "session_id": "550e8400-e29b-41d4-a716-446655440000", "audio_url": null}
+data: {"type": "complete", "content": "與算命", "session_id": "550e8400-e29b-41d4-a716-446655440000", "mood": "default", "voice_style": "chat", "audio_url": null}
 ```
 
 **前端使用示例**:
@@ -277,11 +277,11 @@ const eventSource = new EventSource('/chat/stream', {
 
 eventSource.onmessage = (event) => {
   const data = JSON.parse(event.data);
-  if (data.type === 'token') {
+  if (data.type === 'content') {
     // 逐字显示内容
     console.log(data.content);
-  } else if (data.type === 'done') {
-    // 响应完成
+  } else if (data.type === 'complete') {
+    // 响应完成（如果已流式渲染过 content，就不要重复追加完整内容）
     console.log('Session ID:', data.session_id);
     eventSource.close();
   }
@@ -672,16 +672,22 @@ ws.onopen = () => {
 **接收消息格式（流式响应）**:
 ```json
 {
-  "type": "token",
-  "content": "根据"
+  "type": "content",
+  "content": "與",
+  "session_id": "550e8400-e29b-41d4-a716-446655440000",
+  "mood": "default",
+  "voice_style": "chat"
 }
 ```
 
 ```json
 {
-  "type": "done",
+  "type": "complete",
+  "content": "哈哈，老夫年歲已高，偶爾言語難免重複，還望見諒。",
   "session_id": "550e8400-e29b-41d4-a716-446655440000",
-  "audio_url": null
+  "audio_url": null,
+  "mood": "default",
+  "voice_style": "chat"
 }
 ```
 
@@ -704,11 +710,11 @@ ws.onopen = () => {
 ws.onmessage = (event) => {
   const data = JSON.parse(event.data);
 
-  if (data.type === 'token') {
+  if (data.type === 'content') {
     // 逐字显示响应内容
     appendToChat(data.content);
-  } else if (data.type === 'done') {
-    // 响应完成
+  } else if (data.type === 'complete') {
+    // 响应完成（如果已流式渲染过 content，就不要重复追加完整内容）
     console.log('会话 ID:', data.session_id);
     if (data.audio_url) {
       playAudio(data.audio_url);
@@ -904,6 +910,7 @@ async function streamChat(query, sessionId) {
   const reader = response.body.getReader();
   const decoder = new TextDecoder();
   let buffer = '';
+  let hasStreamedContent = false;
 
   while (true) {
     const { done, value } = await reader.read();
@@ -916,11 +923,15 @@ async function streamChat(query, sessionId) {
     for (const line of lines) {
       if (line.startsWith('data: ')) {
         const data = JSON.parse(line.slice(6));
-        if (data.type === 'token') {
+        if (data.type === 'content') {
           // 逐字追加到界面
           appendToken(data.content);
-        } else if (data.type === 'done') {
-          // 完成
+          hasStreamedContent = true;
+        } else if (data.type === 'complete') {
+          // 完成（避免重复追加完整内容）
+          if (data.content && !hasStreamedContent) {
+            appendToken(data.content);
+          }
           onComplete(data.session_id, data.audio_url);
         }
       }

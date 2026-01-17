@@ -167,6 +167,7 @@ export const streamChat = async ({ token, query, sessionId, enableTts, onToken, 
   const reader = response.body.getReader();
   const decoder = new TextDecoder();
   let buffer = '';
+  let didStreamContent = false;
 
   while (true) {
     const { done, value } = await reader.read();
@@ -195,22 +196,35 @@ export const streamChat = async ({ token, query, sessionId, enableTts, onToken, 
       if (!payload) {
         const plainText = jsonText.trim();
         if (plainText && !plainText.startsWith('{') && !plainText.startsWith('[')) {
+          didStreamContent = true;
           onToken?.(plainText);
         }
         continue;
       }
-      if (payload.type === 'token') {
-        onToken?.(payload.content || '');
-      } else if (payload.type === 'done') {
-        if (payload.content || payload.response) {
-          onToken?.(payload.content || payload.response || '');
+      if (payload.type === 'token' || payload.type === 'content') {
+        const chunk = payload.content || payload.response || '';
+        if (chunk) {
+          didStreamContent = true;
+          onToken?.(chunk);
+        }
+      } else if (payload.type === 'done' || payload.type === 'complete') {
+        const finalContent = payload.content || payload.response || '';
+        if (finalContent && !didStreamContent) {
+          didStreamContent = true;
+          onToken?.(finalContent);
         }
         onDone?.(payload);
       } else if (payload.content || payload.response) {
-        onToken?.(payload.content || payload.response || '');
-        if (payload.session_id || payload.audio_url) {
+        const chunk = payload.content || payload.response || '';
+        if (chunk) {
+          didStreamContent = true;
+          onToken?.(chunk);
+        }
+        if (payload.audio_url) {
           onDone?.(payload);
         }
+      } else if (payload.audio_url) {
+        onDone?.(payload);
       }
     }
   }
