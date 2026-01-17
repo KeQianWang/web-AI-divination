@@ -1,9 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Fira+Sans:wght@300;400;500;600;700&display=swap");
+
 :root {
-  font-family: "Inter", "Segoe UI", sans-serif;
-  color: #0f172a;
-  background: #f8fafc;
-  line-height: 1.5;
+  --bg: #f8fafc;
+  --bg-accent: #eef2ff;
+  --surface: rgba(255, 255, 255, 0.58);
+  --surface-muted: rgba(255, 255, 255, 0.42);
+  --surface-solid: #ffffff;
+  --text: #1e293b;
+  --muted: #64748b;
+  --border: rgba(255, 255, 255, 0.65);
+  --border-strong: rgba(59, 130, 246, 0.5);
+  --primary: #3b82f6;
+  --primary-strong: #2563eb;
+  --primary-soft: rgba(59, 130, 246, 0.12);
+  --accent: #f97316;
+  --accent-strong: #ea580c;
+  --shadow-sm: 0 18px 36px rgba(15, 23, 42, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  --shadow-md: 0 22px 44px rgba(15, 23, 42, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  --shadow-lg: 0 32px 68px rgba(15, 23, 42, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  font-family: "Fira Sans", "Inter", "Segoe UI", sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.6;
   font-weight: 400;
+  color-scheme: light;
 }
 
 * {
@@ -18,7 +38,10 @@ body {
 body {
   margin: 0;
   min-height: 100vh;
-  background: linear-gradient(135deg, #ecfeff 0%, #eef2ff 50%, #f8fafc 100%);
+  background: radial-gradient(circle at 15% 10%, rgba(59, 130, 246, 0.2), transparent 45%),
+    radial-gradient(circle at 80% 15%, rgba(249, 115, 22, 0.18), transparent 40%),
+    radial-gradient(circle at 50% 90%, rgba(99, 102, 241, 0.15), transparent 45%),
+    linear-gradient(135deg, #f8fafc 0%, #eef2ff 45%, #fff7ed 100%);
   overflow: hidden;
   overscroll-behavior: none;
 }
@@ -27,6 +50,33 @@ button,
 input,
 textarea {
   font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid rgba(59, 130, 246, 0.6);
+  outline-offset: 2px;
+}
+
+input[type='checkbox'] {
+  accent-color: var(--primary);
+}
+
+a {
+  color: var(--primary-strong);
+}
+
+::placeholder {
+  color: rgba(100, 116, 139, 0.7);
 }
 
 #root {
@@ -36,7 +86,7 @@ textarea {
 
 .form-hint {
   font-size: 12px;
-  color: #64748b;
+  color: var(--muted);
 }
 
 .form-hint.error {
@@ -45,6 +95,6 @@ textarea {
 
 .empty {
   font-size: 13px;
-  color: #64748b;
+  color: var(--muted);
   padding: 12px 4px;
 }

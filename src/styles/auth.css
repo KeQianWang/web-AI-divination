@@ -9,21 +9,23 @@
 .auth-card {
   width: 100%;
   max-width: 400px;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.6));
+  border-radius: 20px;
   padding: 28px;
-  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
-  border: 1px solid rgba(148, 163, 184, 0.2);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(26px) saturate(160%);
 }
 
 .brand h1 {
   margin: 0 0 6px;
   font-size: 26px;
+  font-family: "Fira Code", "Fira Sans", sans-serif;
 }
 
 .brand p {
   margin: 0 0 20px;
-  color: #64748b;
+  color: var(--muted);
 }
 
 .auth-tabs {
@@ -35,16 +37,17 @@
 .auth-tabs button {
   flex: 1;
   border-radius: 10px;
-  border: 1px solid rgba(148, 163, 184, 0.3);
+  border: 1px solid var(--border);
   padding: 8px 12px;
   background: transparent;
-  cursor: pointer;
+  color: var(--text);
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
 }
 
 .auth-tabs .active {
-  background: rgba(79, 70, 229, 0.15);
-  border-color: rgba(79, 70, 229, 0.35);
-  color: #312e81;
+  background: var(--primary-soft);
+  border-color: var(--border-strong);
+  color: #1d4ed8;
 }
 
 .auth-form {
@@ -58,11 +61,19 @@
   flex-direction: column;
   gap: 4px;
   font-size: 12px;
-  color: #475569;
+  color: var(--muted);
 }
 
 .auth-form input {
   padding: 10px;
   border-radius: 10px;
   border: 1px solid rgba(148, 163, 184, 0.5);
+  background: var(--surface-solid);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth-form input:focus {
+  outline: none;
+  border-color: rgba(59, 130, 246, 0.6);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.16);
 }

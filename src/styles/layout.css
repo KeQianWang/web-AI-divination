@@ -11,17 +11,17 @@
   display: grid;
   grid-template-columns: 260px minmax(0, 1fr) 320px;
   gap: 20px;
-  padding: 0 32px 32px;
+  padding: 16px 32px 32px;
   min-height: 0;
 }
 
 .panel {
-  background: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(148, 163, 184, 0.3);
-  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.42));
+  border: 1px solid var(--border);
+  border-radius: 18px;
   padding: 16px;
-  backdrop-filter: blur(6px);
-  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+  backdrop-filter: blur(24px) saturate(160%);
+  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -43,39 +43,55 @@
 .panel-header h2 {
   margin: 0;
   font-size: 18px;
+  font-family: "Fira Code", "Fira Sans", sans-serif;
+  color: var(--text);
 }
 
 .primary {
-  background: #4f46e5;
+  background: linear-gradient(135deg, var(--accent), #fb923c);
   color: #fff;
   border: none;
   border-radius: 10px;
   padding: 8px 14px;
-  cursor: pointer;
   font-weight: 600;
+  box-shadow: 0 12px 24px rgba(249, 115, 22, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 28px rgba(249, 115, 22, 0.3);
 }
 
 .primary:disabled {
   opacity: 0.6;
-  cursor: not-allowed;
+  box-shadow: none;
 }
 
 .ghost {
-  background: transparent;
-  border: 1px solid rgba(148, 163, 184, 0.6);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.4));
+  border: 1px solid var(--border);
   padding: 6px 12px;
   border-radius: 10px;
-  cursor: pointer;
+  color: var(--text);
+  transition: border-color 0.2s ease, background 0.2s ease;
+  backdrop-filter: blur(18px) saturate(150%);
+}
+
+.ghost:hover {
+  border-color: rgba(59, 130, 246, 0.4);
+  background: rgba(59, 130, 246, 0.1);
 }
 
 .ghost.danger {
   color: #b91c1c;
   border-color: rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.08);
 }
 
 .chip {
-  background: rgba(79, 70, 229, 0.1);
-  color: #3730a3;
+  background: var(--primary-soft);
+  color: #1d4ed8;
   padding: 6px 10px;
   border-radius: 999px;
   font-size: 12px;
@@ -87,5 +103,5 @@
   align-items: center;
   gap: 8px;
   font-size: 13px;
-  color: #475569;
+  color: var(--muted);
 }
