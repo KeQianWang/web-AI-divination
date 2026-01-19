@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { formatMessageTime } from '../utils/formatters';
 import { getSessionId } from '../utils/resolve';
 
@@ -10,6 +11,72 @@ export default function SessionsPanel({
   onRename,
   onDelete
 }) {
+  const [openMenu, setOpenMenu] = useState(null);
+  const openMenuSessionId = openMenu?.sessionId ?? null;
+
+  const clearMenuPosition = () => {
+    if (typeof document === 'undefined') return;
+    const root = document.documentElement;
+    root.style.removeProperty('--session-menu-top');
+    root.style.removeProperty('--session-menu-left');
+  };
+
+  const setMenuPosition = (top, left) => {
+    if (typeof document === 'undefined') return;
+    const root = document.documentElement;
+    root.style.setProperty('--session-menu-top', `${Math.round(top)}px`);
+    root.style.setProperty('--session-menu-left', `${Math.round(left)}px`);
+  };
+
+  useEffect(() => {
+    if (!openMenu) {
+      clearMenuPosition();
+      return;
+    }
+
+    setMenuPosition(openMenu.top, openMenu.left);
+
+    return () => {
+      clearMenuPosition();
+    };
+  }, [openMenu]);
+
+  useEffect(() => {
+    if (!openMenuSessionId) return;
+
+    const handleClick = (event) => {
+      if (!event.target.closest(`[data-session-menu="${openMenuSessionId}"]`)) {
+        setOpenMenu(null);
+      }
+    };
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setOpenMenu(null);
+      }
+    };
+
+    const handleScroll = () => {
+      setOpenMenu(null);
+    };
+
+    const handleResize = () => {
+      setOpenMenu(null);
+    };
+
+    document.addEventListener('click', handleClick);
+    document.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('scroll', handleScroll, true);
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      document.removeEventListener('click', handleClick);
+      document.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('scroll', handleScroll, true);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [openMenuSessionId]);
+
   return (
     <aside className="panel sessions-panel">
       <div className="panel-header">
@@ -21,6 +88,7 @@ export default function SessionsPanel({
       <div className="session-list">
         {sessions.map((session) => {
           const sessionId = getSessionId(session);
+          const isMenuOpen = openMenuSessionId === sessionId;
           return (
             <div
               key={sessionId}
@@ -33,25 +101,78 @@ export default function SessionsPanel({
               >
                 <div className="session-title">{session.title || '未命名会话'}</div>
                 <div className="session-meta">
-                  {(sessionId ? sessionId.slice(0, 8) : '--')} ·{' '}
                   {formatMessageTime(session.updated_at || session.updatedAt)}
                 </div>
               </button>
-              <div className="session-actions">
+              <div
+                className={`session-actions ${isMenuOpen ? 'open' : ''}`}
+                data-session-menu={sessionId}
+              >
                 <button
                   type="button"
-                  className="ghost"
-                  onClick={() => onRename(sessionId, session.title)}
+                  className="session-menu-trigger"
+                  aria-label="会话操作"
+                  aria-haspopup="menu"
+                  aria-expanded={isMenuOpen}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    if (openMenuSessionId === sessionId) {
+                      clearMenuPosition();
+                      setOpenMenu(null);
+                      return;
+                    }
+                    const triggerRect = event.currentTarget.getBoundingClientRect();
+                    const estimatedMenuHeight = 96;
+                    const shouldOpenUp =
+                      triggerRect.bottom + estimatedMenuHeight > window.innerHeight;
+                    const top = shouldOpenUp ? triggerRect.top - 6 : triggerRect.bottom + 6;
+                    const left = triggerRect.right;
+                    setMenuPosition(top, left);
+                    setOpenMenu({
+                      sessionId,
+                      direction: shouldOpenUp ? 'up' : 'down',
+                      top,
+                      left
+                    });
+                  }}
                 >
-                  重命名
+                  <img src="/more.png" alt="" aria-hidden="true" />
                 </button>
-                <button
-                  type="button"
-                  className="ghost danger"
-                  onClick={() => onDelete(sessionId)}
-                >
-                  删除
-                </button>
+                {isMenuOpen && (
+                  createPortal(
+                    <div
+                      className={`session-menu ${openMenu?.direction === 'up' ? 'up' : 'down'}`}
+                      role="menu"
+                      data-session-menu={sessionId}
+                    >
+                      <button
+                        type="button"
+                        className="session-menu-item"
+                        role="menuitem"
+                        onClick={() => {
+                          setOpenMenu(null);
+                          onRename(sessionId, session.title);
+                        }}
+                      >
+                        <img src="/rename.png" alt="" aria-hidden="true" />
+                        重命名
+                      </button>
+                      <button
+                        type="button"
+                        className="session-menu-item danger"
+                        role="menuitem"
+                        onClick={() => {
+                          setOpenMenu(null);
+                          onDelete(sessionId);
+                        }}
+                      >
+                        <img src="/delete.png" alt="" aria-hidden="true" />
+                        删除
+                      </button>
+                    </div>,
+                    document.body
+                  )
+                )}
               </div>
             </div>
           );

@@ -17,8 +17,21 @@
   backdrop-filter: blur(26px) saturate(160%);
 }
 
+.brand-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.brand-title img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
 .brand h1 {
-  margin: 0 0 6px;
+  margin: 0;
   font-size: 26px;
   font-family: "Fira Code", "Fira Sans", sans-serif;
 }

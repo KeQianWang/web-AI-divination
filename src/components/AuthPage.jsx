@@ -14,7 +14,10 @@ export default function AuthPage({
     <div className="auth-page">
       <div className="auth-card">
         <div className="brand">
-          <h1>信我吗?</h1>
+          <div className="brand-title">
+            <img src="/hero.png" alt="" aria-hidden="true" />
+            <h1>信我吗?</h1>
+          </div>
           <p>我只负责算，不负责安慰。</p>
         </div>
         <div className="auth-tabs">

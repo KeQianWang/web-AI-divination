@@ -12,11 +12,20 @@
 }
 
 .title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-size: 22px;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text);
   font-family: "Fira Code", "Fira Sans", sans-serif;
+}
+
+.title img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
 }
 
 .subtitle {
@@ -73,7 +82,7 @@
   position: absolute;
   right: 0;
   top: calc(100% + 8px);
-  min-width: 140px;
+  min-width: 117px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.7));
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -89,10 +98,19 @@
   background: transparent;
   border: none;
   text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   padding: 8px 14px;
   font-weight: 500;
   color: var(--text);
   transition: background 0.2s ease, color 0.2s ease;
+}
+
+.dropdown button img {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
 }
 
 .dropdown button:hover {

@@ -14,7 +14,10 @@ export default function AppHeader({
   return (
     <header className="app-header">
       <div>
-        <div className="title">信我吗?</div>
+        <div className="title">
+          <img src="/hero.png" alt="" aria-hidden="true" />
+          <span>信我吗?</span>
+        </div>
       </div>
       <div className="header-actions">
         <div className="user-menu" ref={userMenuRef}>
@@ -27,9 +30,11 @@ export default function AppHeader({
           {userMenuOpen && (
             <div className="dropdown">
               <button type="button" onClick={onOpenProfile}>
+                <img src="/modife.png" alt="" aria-hidden="true" />
                 修改信息
               </button>
               <button type="button" onClick={onLogout}>
+                <img src="/logout.png" alt="" aria-hidden="true" />
                 退出登录
               </button>
             </div>
