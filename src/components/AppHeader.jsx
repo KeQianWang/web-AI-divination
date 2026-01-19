@@ -16,7 +16,7 @@ export default function AppHeader({
       <div>
         <div className="title">
           <img src="/hero.png" alt="" aria-hidden="true" />
-          <span>信我吗?</span>
+          <span>信我么</span>
         </div>
       </div>
       <div className="header-actions">

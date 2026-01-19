@@ -16,7 +16,7 @@ export default function AuthPage({
         <div className="brand">
           <div className="brand-title">
             <img src="/hero.png" alt="" aria-hidden="true" />
-            <h1>信我吗?</h1>
+            <h1>信我么</h1>
           </div>
           <p>我只负责算，不负责安慰。</p>
         </div>
