@@ -16,7 +16,7 @@ export default function ChatPanel({
   return (
     <section className="panel chat-panel">
       <div className="panel-header">
-        <h2>聊天</h2>
+        <h2>在听你说:</h2>
         <label className="toggle">
           <input
             type="checkbox"
@@ -69,7 +69,7 @@ export default function ChatPanel({
             <textarea
               value={chatInput}
               onChange={(event) => onChatInputChange(event.target.value)}
-              placeholder="请输入你的问题..."
+              placeholder="说吧，你想算什么..."
               rows={2}
               onKeyDown={(event) => {
                 if (event.isComposing) return;

@@ -32,7 +32,6 @@ const emptyAuthForm = {
 
 export default function App() {
   const [token, setToken] = useState(() => localStorage.getItem('access_token') || '');
-  const [statusText, setStatusText] = useState('');
   const [user, setUser] = useState(null);
   const [profileForm, setProfileForm] = useState(emptyProfile);
   const [profileMessage, setProfileMessage] = useState('');
@@ -68,22 +67,6 @@ export default function App() {
 
   const authenticated = Boolean(token);
 
-  useEffect(() => {
-    let active = true;
-    fetch(`${baseUrl}/`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (!active) return;
-        setStatusText(data.response || '服务在线');
-      })
-      .catch(() => {
-        if (!active) return;
-        setStatusText('服务不可达');
-      });
-    return () => {
-      active = false;
-    };
-  }, []);
 
   const handleAuthError = (error) => {
     if (error?.status === 401) {
@@ -570,7 +553,6 @@ export default function App() {
   return (
     <div className="app">
       <AppHeader
-        statusText={statusText}
         user={user}
         userMenuOpen={userMenuOpen}
         onUserMenuToggle={handleUserMenuToggle}

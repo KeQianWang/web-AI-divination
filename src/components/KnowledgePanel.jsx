@@ -21,7 +21,7 @@ export default function KnowledgePanel({
     <aside className="panel profile-panel">
       <div className="knowledge">
         <div className="knowledge-header">
-          <h3>知识库</h3>
+          <h3>参考点什么</h3>
           <label className="toggle">
             <input
               type="checkbox"
@@ -82,7 +82,7 @@ export default function KnowledgePanel({
             </div>
           )}
           <button type="submit" className="primary" disabled={knowledgeDisabled}>
-            {knowledgeLoading ? '上传中...' : '添加知识'}
+            {knowledgeLoading ? '上传中...' : '算的时候用得上'}
           </button>
         </form>
       </div>

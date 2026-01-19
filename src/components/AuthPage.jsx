@@ -14,8 +14,8 @@ export default function AuthPage({
     <div className="auth-page">
       <div className="auth-card">
         <div className="brand">
-          <h1>神秘预言师</h1>
-          <p>AI 智能占卜聊天</p>
+          <h1>信我吗?</h1>
+          <p>我只负责算，不负责安慰。</p>
         </div>
         <div className="auth-tabs">
           <button

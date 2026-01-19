@@ -13,9 +13,9 @@ export default function SessionsPanel({
   return (
     <aside className="panel sessions-panel">
       <div className="panel-header">
-        <h2>会话</h2>
+        <h2>问过的事</h2>
         <button type="button" className="primary" onClick={onCreate}>
-          新建
+            再问一卦
         </button>
       </div>
       <div className="session-list">

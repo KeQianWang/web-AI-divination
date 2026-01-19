@@ -2,7 +2,6 @@ import React from 'react';
 import { resolveAvatarSrc } from '../utils/formatters';
 
 export default function AppHeader({
-  statusText,
   user,
   userMenuOpen,
   onUserMenuToggle,
@@ -15,8 +14,7 @@ export default function AppHeader({
   return (
     <header className="app-header">
       <div>
-        <div className="title">神秘预言师</div>
-        <div className="subtitle">{statusText || '正在连接...'}</div>
+        <div className="title">信我吗?</div>
       </div>
       <div className="header-actions">
         <div className="user-menu" ref={userMenuRef}>
