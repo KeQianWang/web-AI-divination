@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import useUserStore from '../store/useUserStore';
 import { resolveAvatarSrc } from '../utils/formatters';
 
@@ -37,6 +38,7 @@ export default function ProfileModal({ onClose }) {
       });
       setProfileMessage('资料已更新。');
       setAvatarFileKey((prev) => prev + 1);
+      onClose();
     } catch (error) {
       setProfileMessage(error.message || '更新失败。');
     }
@@ -62,13 +64,14 @@ export default function ProfileModal({ onClose }) {
     reader.readAsDataURL(file);
   };
 
-  return (
+  if (typeof document === 'undefined') return null;
+
+  return createPortal(
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal" onClick={(event) => event.stopPropagation()}>
         <div className="modal-header">
           <div>
             <h3>个人信息</h3>
-            <div className="modal-subtitle">{user?.username || '用户'}</div>
           </div>
           <button type="button" className="icon-button" onClick={onClose}>
             X
@@ -109,6 +112,7 @@ export default function ProfileModal({ onClose }) {
           </button>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
