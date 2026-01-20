@@ -11,20 +11,64 @@ export default function ChatPanel({
   isStreaming,
   ttsEnabled,
   onToggleTts,
-  messagesEndRef
+  messagesEndRef,
+  onOpenSessions,
+  onOpenKnowledge
 }) {
+  const hasMobileActions = Boolean(onOpenSessions || onOpenKnowledge);
+
   return (
     <section className="panel chat-panel">
       <div className="panel-header">
-        <h2>在听你说:</h2>
-        <label className="toggle">
-          <input
-            type="checkbox"
-            checked={ttsEnabled}
-            onChange={(event) => onToggleTts(event.target.checked)}
-          />
-          <span>开启语音合成</span>
-        </label>
+        {hasMobileActions ? (
+          <div className="chat-header-row">
+            <h2>在听你说:</h2>
+            <div className="chat-header-actions">
+              <label className="toggle">
+                <input
+                  type="checkbox"
+                  checked={ttsEnabled}
+                  onChange={(event) => onToggleTts(event.target.checked)}
+                />
+                <span>开启语音合成</span>
+              </label>
+              <div className="chat-mobile-actions">
+                {onOpenSessions && (
+                  <button
+                    type="button"
+                    className="chat-icon-button"
+                    aria-label="打开问过的事"
+                    onClick={onOpenSessions}
+                  >
+                    <img src="/history.png" alt="" aria-hidden="true" />
+                  </button>
+                )}
+                {onOpenKnowledge && (
+                  <button
+                    type="button"
+                    className="chat-icon-button"
+                    aria-label="打开参考点什么"
+                    onClick={onOpenKnowledge}
+                  >
+                    <img src="/knowledge.png" alt="" aria-hidden="true" />
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <>
+            <h2>在听你说:</h2>
+            <label className="toggle">
+              <input
+                type="checkbox"
+                checked={ttsEnabled}
+                onChange={(event) => onToggleTts(event.target.checked)}
+              />
+              <span>开启语音合成</span>
+            </label>
+          </>
+        )}
       </div>
       <div className="chat-body">
         <div className="messages">

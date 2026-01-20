@@ -64,8 +64,40 @@ export default function App() {
   const [historyLoading, setHistoryLoading] = useState(false);
   const messagesEndRef = useRef(null);
   const userMenuRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.innerWidth <= 900;
+  });
+  const [sessionsDrawerOpen, setSessionsDrawerOpen] = useState(false);
+  const [knowledgeDrawerOpen, setKnowledgeDrawerOpen] = useState(false);
 
   const authenticated = Boolean(token);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const handleResize = () => {
+      const nextIsMobile = window.innerWidth <= 900;
+      setIsMobile(nextIsMobile);
+      if (!nextIsMobile) {
+        setSessionsDrawerOpen(false);
+        setKnowledgeDrawerOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    if (sessionsDrawerOpen || knowledgeDrawerOpen) {
+      const previousOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = previousOverflow;
+      };
+    }
+    return undefined;
+  }, [sessionsDrawerOpen, knowledgeDrawerOpen]);
 
 
   const handleAuthError = (error) => {
@@ -110,6 +142,21 @@ export default function App() {
 
   const scrollToBottom = (behavior = 'auto') => {
     messagesEndRef.current?.scrollIntoView({ behavior, block: 'end' });
+  };
+
+  const handleToggleSessionsDrawer = () => {
+    setSessionsDrawerOpen((open) => !open);
+    setKnowledgeDrawerOpen(false);
+  };
+
+  const handleToggleKnowledgeDrawer = () => {
+    setKnowledgeDrawerOpen((open) => !open);
+    setSessionsDrawerOpen(false);
+  };
+
+  const handleCloseDrawers = () => {
+    setSessionsDrawerOpen(false);
+    setKnowledgeDrawerOpen(false);
   };
 
   const refreshSessions = async () => {
@@ -560,16 +607,17 @@ export default function App() {
         onLogout={handleLogoutClick}
         userMenuRef={userMenuRef}
       />
-
       <main className="layout">
-        <SessionsPanel
-          sessions={sessionsList}
-          activeSessionId={activeSessionId}
-          onCreate={handleCreateSession}
-          onSelect={handleSelectSession}
-          onRename={handleRenameSession}
-          onDelete={handleDeleteSession}
-        />
+        {!isMobile && (
+          <SessionsPanel
+            sessions={sessionsList}
+            activeSessionId={activeSessionId}
+            onCreate={handleCreateSession}
+            onSelect={handleSelectSession}
+            onRename={handleRenameSession}
+            onDelete={handleDeleteSession}
+          />
+        )}
         <ChatPanel
           messages={messages}
           historyLoading={historyLoading}
@@ -581,25 +629,79 @@ export default function App() {
           ttsEnabled={ttsEnabled}
           onToggleTts={setTtsEnabled}
           messagesEndRef={messagesEndRef}
+          onOpenSessions={isMobile ? handleToggleSessionsDrawer : null}
+          onOpenKnowledge={isMobile ? handleToggleKnowledgeDrawer : null}
         />
-        <KnowledgePanel
-          knowledgeSources={knowledgeSources}
-          knowledgeSourcesLoading={knowledgeSourcesLoading}
-          knowledgeSourcesError={knowledgeSourcesError}
-          knowledgeAttachSession={knowledgeAttachSession}
-          onAttachChange={setKnowledgeAttachSession}
-          knowledgeUrl={knowledgeUrl}
-          onUrlChange={setKnowledgeUrl}
-          knowledgeFileKey={knowledgeFileKey}
-          onFileChange={setKnowledgeFile}
-          knowledgeMessage={knowledgeMessage}
-          knowledgeError={knowledgeError}
-          knowledgeDisabled={knowledgeDisabled}
-          knowledgeLoading={knowledgeLoading}
-          activeSessionId={activeSessionId}
-          onSubmit={handleKnowledgeSubmit}
-        />
+        {!isMobile && (
+          <KnowledgePanel
+            knowledgeSources={knowledgeSources}
+            knowledgeSourcesLoading={knowledgeSourcesLoading}
+            knowledgeSourcesError={knowledgeSourcesError}
+            knowledgeAttachSession={knowledgeAttachSession}
+            onAttachChange={setKnowledgeAttachSession}
+            knowledgeUrl={knowledgeUrl}
+            onUrlChange={setKnowledgeUrl}
+            knowledgeFileKey={knowledgeFileKey}
+            onFileChange={setKnowledgeFile}
+            knowledgeMessage={knowledgeMessage}
+              knowledgeError={knowledgeError}
+              knowledgeDisabled={knowledgeDisabled}
+              knowledgeLoading={knowledgeLoading}
+              activeSessionId={activeSessionId}
+              onSubmit={handleKnowledgeSubmit}
+          />
+        )}
       </main>
+      {isMobile && (
+        <>
+          <div
+            className={`mobile-drawer-overlay ${
+              sessionsDrawerOpen || knowledgeDrawerOpen ? 'open' : ''
+            }`}
+            onClick={handleCloseDrawers}
+          />
+          <div
+            className={`mobile-drawer left ${sessionsDrawerOpen ? 'open' : ''}`}
+            role="dialog"
+            aria-modal="true"
+            aria-label="问过的事"
+          >
+            <SessionsPanel
+              sessions={sessionsList}
+              activeSessionId={activeSessionId}
+              onCreate={handleCreateSession}
+              onSelect={handleSelectSession}
+              onRename={handleRenameSession}
+              onDelete={handleDeleteSession}
+              onClose={handleCloseDrawers}
+            />
+          </div>
+          <div
+            className={`mobile-drawer right ${knowledgeDrawerOpen ? 'open' : ''}`}
+            role="dialog"
+            aria-modal="true"
+            aria-label="参考点什么"
+          >
+            <KnowledgePanel
+              knowledgeSources={knowledgeSources}
+              knowledgeSourcesLoading={knowledgeSourcesLoading}
+              knowledgeSourcesError={knowledgeSourcesError}
+              knowledgeAttachSession={knowledgeAttachSession}
+              onAttachChange={setKnowledgeAttachSession}
+              knowledgeUrl={knowledgeUrl}
+              onUrlChange={setKnowledgeUrl}
+              knowledgeFileKey={knowledgeFileKey}
+              onFileChange={setKnowledgeFile}
+              knowledgeMessage={knowledgeMessage}
+              knowledgeError={knowledgeError}
+              knowledgeDisabled={knowledgeDisabled}
+              knowledgeLoading={knowledgeLoading}
+              activeSessionId={activeSessionId}
+              onSubmit={handleKnowledgeSubmit}
+            />
+          </div>
+        </>
+      )}
       {profileOpen && (
         <ProfileModal
           user={user}

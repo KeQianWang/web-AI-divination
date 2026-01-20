@@ -9,7 +9,8 @@ export default function SessionsPanel({
   onCreate,
   onSelect,
   onRename,
-  onDelete
+  onDelete,
+  onClose
 }) {
   const [openMenu, setOpenMenu] = useState(null);
   const openMenuSessionId = openMenu?.sessionId ?? null;
@@ -81,103 +82,110 @@ export default function SessionsPanel({
     <aside className="panel sessions-panel">
       <div className="panel-header">
         <h2>问过的事</h2>
-        <button type="button" className="primary" onClick={onCreate}>
+        <div className="panel-actions">
+          <button type="button" className="primary" onClick={onCreate}>
             再问一卦
-        </button>
+          </button>
+        </div>
       </div>
-      <div className="session-list">
-        {sessions.map((session) => {
-          const sessionId = getSessionId(session);
-          const isMenuOpen = openMenuSessionId === sessionId;
-          return (
-            <div
-              key={sessionId}
-              className={`session-item ${sessionId === activeSessionId ? 'active' : ''}`}
-            >
-              <button
-                type="button"
-                className="session-main"
-                onClick={() => onSelect(sessionId)}
-              >
-                <div className="session-title">{session.title || '未命名会话'}</div>
-                <div className="session-meta">
-                  {formatMessageTime(session.updated_at || session.updatedAt)}
-                </div>
-              </button>
+      <div className="panel-body">
+        <div className="session-list">
+          {sessions.map((session) => {
+            const sessionId = getSessionId(session);
+            const isMenuOpen = openMenuSessionId === sessionId;
+            return (
               <div
-                className={`session-actions ${isMenuOpen ? 'open' : ''}`}
-                data-session-menu={sessionId}
+                key={sessionId}
+                className={`session-item ${sessionId === activeSessionId ? 'active' : ''}`}
               >
                 <button
                   type="button"
-                  className="session-menu-trigger"
-                  aria-label="会话操作"
-                  aria-haspopup="menu"
-                  aria-expanded={isMenuOpen}
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    if (openMenuSessionId === sessionId) {
-                      clearMenuPosition();
-                      setOpenMenu(null);
-                      return;
-                    }
-                    const triggerRect = event.currentTarget.getBoundingClientRect();
-                    const estimatedMenuHeight = 96;
-                    const shouldOpenUp =
-                      triggerRect.bottom + estimatedMenuHeight > window.innerHeight;
-                    const top = shouldOpenUp ? triggerRect.top - 6 : triggerRect.bottom + 6;
-                    const left = triggerRect.right;
-                    setMenuPosition(top, left);
-                    setOpenMenu({
-                      sessionId,
-                      direction: shouldOpenUp ? 'up' : 'down',
-                      top,
-                      left
-                    });
+                  className="session-main"
+                  onClick={() => {
+                    onSelect(sessionId);
+                    onClose?.();
                   }}
                 >
-                  <img src="/more.png" alt="" aria-hidden="true" />
+                  <div className="session-title">{session.title || '未命名会话'}</div>
+                  <div className="session-meta">
+                    {formatMessageTime(session.updated_at || session.updatedAt)}
+                  </div>
                 </button>
-                {isMenuOpen && (
-                  createPortal(
-                    <div
-                      className={`session-menu ${openMenu?.direction === 'up' ? 'up' : 'down'}`}
-                      role="menu"
-                      data-session-menu={sessionId}
-                    >
-                      <button
-                        type="button"
-                        className="session-menu-item"
-                        role="menuitem"
-                        onClick={() => {
-                          setOpenMenu(null);
-                          onRename(sessionId, session.title);
-                        }}
+                <div
+                  className={`session-actions ${isMenuOpen ? 'open' : ''}`}
+                  data-session-menu={sessionId}
+                >
+                  <button
+                    type="button"
+                    className="session-menu-trigger"
+                    aria-label="会话操作"
+                    aria-haspopup="menu"
+                    aria-expanded={isMenuOpen}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      if (openMenuSessionId === sessionId) {
+                        clearMenuPosition();
+                        setOpenMenu(null);
+                        return;
+                      }
+                      const triggerRect = event.currentTarget.getBoundingClientRect();
+                      const estimatedMenuHeight = 96;
+                      const shouldOpenUp =
+                        triggerRect.bottom + estimatedMenuHeight > window.innerHeight;
+                      const top = shouldOpenUp ? triggerRect.top - 6 : triggerRect.bottom + 6;
+                      const left = triggerRect.right;
+                      setMenuPosition(top, left);
+                      setOpenMenu({
+                        sessionId,
+                        direction: shouldOpenUp ? 'up' : 'down',
+                        top,
+                        left
+                      });
+                    }}
+                  >
+                    <img src="/more.png" alt="" aria-hidden="true" />
+                  </button>
+                  {isMenuOpen && (
+                    createPortal(
+                      <div
+                        className={`session-menu ${openMenu?.direction === 'up' ? 'up' : 'down'}`}
+                        role="menu"
+                        data-session-menu={sessionId}
                       >
-                        <img src="/rename.png" alt="" aria-hidden="true" />
-                        重命名
-                      </button>
-                      <button
-                        type="button"
-                        className="session-menu-item danger"
-                        role="menuitem"
-                        onClick={() => {
-                          setOpenMenu(null);
-                          onDelete(sessionId);
-                        }}
-                      >
-                        <img src="/delete.png" alt="" aria-hidden="true" />
-                        删除
-                      </button>
-                    </div>,
-                    document.body
-                  )
-                )}
+                        <button
+                          type="button"
+                          className="session-menu-item"
+                          role="menuitem"
+                          onClick={() => {
+                            setOpenMenu(null);
+                            onRename(sessionId, session.title);
+                          }}
+                        >
+                          <img src="/rename.png" alt="" aria-hidden="true" />
+                          重命名
+                        </button>
+                        <button
+                          type="button"
+                          className="session-menu-item danger"
+                          role="menuitem"
+                          onClick={() => {
+                            setOpenMenu(null);
+                            onDelete(sessionId);
+                          }}
+                        >
+                          <img src="/delete.png" alt="" aria-hidden="true" />
+                          删除
+                        </button>
+                      </div>,
+                      document.body
+                    )
+                  )}
+                </div>
               </div>
-            </div>
-          );
-        })}
-        {sessions.length === 0 && <div className="empty">这里啥都没有。</div>}
+            );
+          })}
+          {sessions.length === 0 && <div className="empty">这里啥都没有。</div>}
+        </div>
       </div>
     </aside>
   );

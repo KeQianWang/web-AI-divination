@@ -47,6 +47,22 @@
   color: var(--text);
 }
 
+.panel-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.panel-body {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+}
+
+
 .primary {
   background: linear-gradient(135deg, var(--accent), #fb923c);
   color: #fff;

@@ -1,38 +1,29 @@
-@media (max-width: 1100px) {
-  .layout {
-    grid-template-columns: 240px minmax(0, 1fr);
-  }
-  .profile-panel {
-    grid-column: span 2;
-  }
-}
-
 @media (max-width: 900px) {
   body {
-    overflow: auto;
+    overflow: hidden;
   }
 
   .app {
-    height: auto;
-    min-height: 100vh;
-    overflow: visible;
-  }
-
-  .app-header {
-    flex-direction: column;
-    align-items: flex-start;
+    height: 100dvh;
+    min-height: 100dvh;
+    overflow: hidden;
   }
 
   .layout {
+    display: flex;
+    flex-direction: column;
     grid-template-columns: 1fr;
-    padding: 12px 20px 24px;
-  }
-
-  .sessions-panel {
-    order: 1;
+    gap: 12px;
+    padding: 12px 16px 20px;
   }
 
   .chat-panel {
+    order: 1;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .sessions-panel {
     order: 2;
   }
 
@@ -40,14 +31,108 @@
     order: 3;
   }
 
+  .panel-header {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .panel-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
   .message-bubble {
     max-width: 100%;
+  }
+
+  .mobile-drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 40;
+  }
+
+  .mobile-drawer-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .mobile-drawer {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: min(340px, 86vw);
+    background: transparent;
+    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.18);
+    transition: transform 0.25s ease;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mobile-drawer.left {
+    left: 0;
+    transform: translateX(-100%);
+  }
+
+  .mobile-drawer.right {
+    right: 0;
+    transform: translateX(100%);
+  }
+
+  .mobile-drawer.open {
+    transform: translateX(0);
+  }
+
+  .mobile-drawer .panel {
+    border-radius: 0;
+    height: 100%;
   }
 }
 
 @media (max-width: 600px) {
   .app-header {
     padding: 14px 16px 8px;
+    gap: 8px;
+    flex-wrap: nowrap;
+  }
+
+  .title {
+    font-size: 18px;
+    flex: 0 0 auto;
+  }
+
+  .title img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .header-actions {
+    flex: 1;
+    min-width: 0;
+    justify-content: flex-end;
+  }
+
+  .user-button {
+    padding: 4px 8px;
+    font-size: 12px;
+    max-width: 50vw;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .user-button span {
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .user-button::after {
+    font-size: 10px;
   }
 
   .panel {
@@ -55,6 +140,51 @@
   }
 
   .panel-header h2 {
-    font-size: 16px;
+    font-size: 15px;
   }
+
+  .toggle {
+    width: 100%;
+  }
+
+  .chat-header-actions .toggle {
+    width: auto;
+    white-space: nowrap;
+  }
+
+  .knowledge-header {
+    flex-wrap: wrap;
+  }
+
+  .knowledge-header h3 {
+    white-space: nowrap;
+  }
+
+  .knowledge-header .toggle {
+    width: auto;
+    white-space: nowrap;
+  }
+
+  .panel-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .panel-actions .primary {
+    width: 100%;
+  }
+
+  .messages {
+    padding-right: 0;
+  }
+
+  .composer-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .composer-row button {
+    width: 100%;
+  }
+
 }
