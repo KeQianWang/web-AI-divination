@@ -81,7 +81,7 @@ export default function SessionsPanel({
   return (
     <aside className="panel sessions-panel">
       <div className="panel-header">
-        <h2>问过的事</h2>
+        <h3>问过的事</h3>
         <div className="panel-actions">
           <button type="button" className="primary" onClick={onCreate}>
             再问一卦
