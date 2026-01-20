@@ -60,7 +60,7 @@ export default function ChatPanel({
           {historyLoading ? (
             <div className="empty">历史记录加载中...</div>
           ) : (
-            messages.length === 0 && <div className="empty">开始新的对话即可看到消息。</div>
+            messages.length === 0 && <div className="empty">所问之事心中默念三遍，方显诚心。</div>
           )}
           <div ref={messagesEndRef} />
         </div>
@@ -69,7 +69,7 @@ export default function ChatPanel({
             <textarea
               value={chatInput}
               onChange={(event) => onChatInputChange(event.target.value)}
-              placeholder="说吧，你想算什么..."
+              placeholder="说吧，你想问什么..."
               rows={2}
               onKeyDown={(event) => {
                 if (event.isComposing) return;

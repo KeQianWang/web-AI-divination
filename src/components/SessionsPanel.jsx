@@ -177,7 +177,7 @@ export default function SessionsPanel({
             </div>
           );
         })}
-        {sessions.length === 0 && <div className="empty">暂无会话，先创建一个吧。</div>}
+        {sessions.length === 0 && <div className="empty">这里啥都没有。</div>}
       </div>
     </aside>
   );

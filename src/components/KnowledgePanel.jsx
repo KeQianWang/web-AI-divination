@@ -51,7 +51,7 @@ export default function KnowledgePanel({
               ))}
             </ul>
           ) : (
-            <div className="empty">暂无参考内容。</div>
+            <div className="empty">这里啥都没有。</div>
           )}
         </div>
         <form className="knowledge-form" onSubmit={onSubmit}>
