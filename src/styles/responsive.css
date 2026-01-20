@@ -101,6 +101,15 @@
     flex-wrap: nowrap;
   }
 
+  .header-left {
+    gap: 8px;
+  }
+
+  .back-button {
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+
   .title {
     font-size: 18px;
     flex: 0 0 auto;
@@ -187,5 +196,21 @@
 
   .composer-row button {
     width: 100%;
+  }
+
+  .page {
+    padding: 16px;
+  }
+
+  .chat-page {
+    padding: 0;
+  }
+
+  .home-hero h1 {
+    font-size: 22px;
+  }
+
+  .card-grid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   }
 }

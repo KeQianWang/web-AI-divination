@@ -1,14 +1,56 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import useUserStore from '../store/useUserStore';
+import { ROUTES } from '../router/routes';
 
-export default function AuthPage({
-  authTab,
-  authForm,
-  authError,
-  onTabChange,
-  onFieldChange,
-  onSubmit
-}) {
-  const handleFieldChange = (field) => (event) => onFieldChange(field, event.target.value);
+const emptyAuthForm = {
+  username: '',
+  password: '',
+  phone: ''
+};
+
+export default function AuthPage() {
+  const navigate = useNavigate();
+  const token = useUserStore((state) => state.token);
+  const login = useUserStore((state) => state.login);
+  const register = useUserStore((state) => state.register);
+  const [authTab, setAuthTab] = useState('login');
+  const [authForm, setAuthForm] = useState(emptyAuthForm);
+  const [authError, setAuthError] = useState('');
+
+  useEffect(() => {
+    if (token) {
+      navigate(ROUTES.home.path, { replace: true });
+    }
+  }, [token, navigate]);
+
+  const handleFieldChange = (field) => (event) => {
+    setAuthForm((prev) => ({ ...prev, [field]: event.target.value }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setAuthError('');
+    try {
+      if (authTab === 'login') {
+        await login({
+          username: authForm.username,
+          password: authForm.password
+        });
+        navigate(ROUTES.home.path, { replace: true });
+      } else {
+        await register({
+          username: authForm.username,
+          password: authForm.password,
+          phone: authForm.phone
+        });
+        setAuthTab('login');
+        setAuthError('注册成功，请登录。');
+      }
+    } catch (error) {
+      setAuthError(error.message || '请求失败。');
+    }
+  };
 
   return (
     <div className="auth-page">
@@ -24,19 +66,19 @@ export default function AuthPage({
           <button
             type="button"
             className={authTab === 'login' ? 'active' : ''}
-            onClick={() => onTabChange('login')}
+            onClick={() => setAuthTab('login')}
           >
             登录
           </button>
           <button
             type="button"
             className={authTab === 'register' ? 'active' : ''}
-            onClick={() => onTabChange('register')}
+            onClick={() => setAuthTab('register')}
           >
             注册
           </button>
         </div>
-        <form className="auth-form" onSubmit={onSubmit}>
+        <form className="auth-form" onSubmit={handleSubmit}>
           <label>
             用户名
             <input

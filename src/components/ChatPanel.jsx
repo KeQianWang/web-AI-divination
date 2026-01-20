@@ -1,21 +1,24 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { formatMessageTime, resolveAudioUrl, resolveMoodEmoji } from '../utils/formatters';
+import useChatStore from '../store/useChatStore';
 
-export default function ChatPanel({
-  messages,
-  historyLoading,
-  chatInput,
-  onChatInputChange,
-  onSend,
-  chatError,
-  isStreaming,
-  ttsEnabled,
-  onToggleTts,
-  messagesEndRef,
-  onOpenSessions,
-  onOpenKnowledge
-}) {
+export default function ChatPanel({ onOpenSessions, onOpenKnowledge }) {
+  const messages = useChatStore((state) => state.messages);
+  const historyLoading = useChatStore((state) => state.historyLoading);
+  const chatInput = useChatStore((state) => state.chatInput);
+  const setChatInput = useChatStore((state) => state.setChatInput);
+  const sendMessage = useChatStore((state) => state.sendMessage);
+  const chatError = useChatStore((state) => state.chatError);
+  const isStreaming = useChatStore((state) => state.isStreaming);
+  const ttsEnabled = useChatStore((state) => state.ttsEnabled);
+  const setTtsEnabled = useChatStore((state) => state.setTtsEnabled);
+  const messagesEndRef = useRef(null);
   const hasMobileActions = Boolean(onOpenSessions || onOpenKnowledge);
+
+  useEffect(() => {
+    if (historyLoading) return;
+    messagesEndRef.current?.scrollIntoView({ behavior: 'auto', block: 'end' });
+  }, [messages, historyLoading]);
 
   return (
     <section className="panel chat-panel">
@@ -28,7 +31,7 @@ export default function ChatPanel({
                 <input
                   type="checkbox"
                   checked={ttsEnabled}
-                  onChange={(event) => onToggleTts(event.target.checked)}
+                  onChange={(event) => setTtsEnabled(event.target.checked)}
                 />
                 <span>开启语音合成</span>
               </label>
@@ -63,7 +66,7 @@ export default function ChatPanel({
               <input
                 type="checkbox"
                 checked={ttsEnabled}
-                onChange={(event) => onToggleTts(event.target.checked)}
+                onChange={(event) => setTtsEnabled(event.target.checked)}
               />
               <span>开启语音合成</span>
             </label>
@@ -112,7 +115,7 @@ export default function ChatPanel({
           <div className="composer-row">
             <textarea
               value={chatInput}
-              onChange={(event) => onChatInputChange(event.target.value)}
+              onChange={(event) => setChatInput(event.target.value)}
               placeholder="说吧，你想问什么..."
               rows={2}
               onKeyDown={(event) => {
@@ -122,11 +125,11 @@ export default function ChatPanel({
                   if (isStreaming) return;
                   const text = event.currentTarget.value;
                   if (!text.trim()) return;
-                  onSend(text);
+                  sendMessage(text);
                 }
               }}
             />
-            <button type="button" className="primary" onClick={() => onSend()}>
+            <button type="button" className="primary" onClick={() => sendMessage()}>
               {isStreaming ? '发送中...' : '发送'}
             </button>
           </div>

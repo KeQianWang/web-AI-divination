@@ -1,22 +1,29 @@
 import React from 'react';
+import useChatStore from '../store/useChatStore';
 
-export default function KnowledgePanel({
-  knowledgeSources,
-  knowledgeSourcesLoading,
-  knowledgeSourcesError,
-  knowledgeAttachSession,
-  onAttachChange,
-  knowledgeUrl,
-  onUrlChange,
-  knowledgeFileKey,
-  onFileChange,
-  knowledgeMessage,
-  knowledgeError,
-  knowledgeDisabled,
-  knowledgeLoading,
-  activeSessionId,
-  onSubmit
-}) {
+export default function KnowledgePanel() {
+  const knowledgeSources = useChatStore((state) => state.knowledgeSources);
+  const knowledgeSourcesLoading = useChatStore((state) => state.knowledgeSourcesLoading);
+  const knowledgeSourcesError = useChatStore((state) => state.knowledgeSourcesError);
+  const knowledgeAttachSession = useChatStore((state) => state.knowledgeAttachSession);
+  const setKnowledgeAttachSession = useChatStore((state) => state.setKnowledgeAttachSession);
+  const knowledgeUrl = useChatStore((state) => state.knowledgeUrl);
+  const setKnowledgeUrl = useChatStore((state) => state.setKnowledgeUrl);
+  const knowledgeFileKey = useChatStore((state) => state.knowledgeFileKey);
+  const setKnowledgeFile = useChatStore((state) => state.setKnowledgeFile);
+  const knowledgeMessage = useChatStore((state) => state.knowledgeMessage);
+  const knowledgeError = useChatStore((state) => state.knowledgeError);
+  const knowledgeLoading = useChatStore((state) => state.knowledgeLoading);
+  const activeSessionId = useChatStore((state) => state.activeSessionId);
+  const submitKnowledge = useChatStore((state) => state.submitKnowledge);
+  const knowledgeFile = useChatStore((state) => state.knowledgeFile);
+
+  const knowledgeDisabled =
+    !knowledgeAttachSession ||
+    !activeSessionId ||
+    knowledgeLoading ||
+    (!knowledgeUrl.trim() && !knowledgeFile);
+
   return (
     <aside className="panel profile-panel">
       <div className="knowledge">
@@ -27,7 +34,7 @@ export default function KnowledgePanel({
               <input
                 type="checkbox"
                 checked={knowledgeAttachSession}
-                onChange={(event) => onAttachChange(event.target.checked)}
+                onChange={(event) => setKnowledgeAttachSession(event.target.checked)}
               />
               <span>关联当前会话</span>
             </label>
@@ -57,12 +64,18 @@ export default function KnowledgePanel({
               <div className="empty">这里啥都没有。</div>
             )}
           </div>
-          <form className="knowledge-form" onSubmit={onSubmit}>
+          <form
+            className="knowledge-form"
+            onSubmit={(event) => {
+              event.preventDefault();
+              submitKnowledge();
+            }}
+          >
             <label>
               链接
               <input
                 value={knowledgeUrl}
-                onChange={(event) => onUrlChange(event.target.value)}
+                onChange={(event) => setKnowledgeUrl(event.target.value)}
                 placeholder="https://example.com/article"
               />
             </label>
@@ -71,7 +84,7 @@ export default function KnowledgePanel({
               <input
                 key={knowledgeFileKey}
                 type="file"
-                onChange={(event) => onFileChange(event.target.files?.[0] || null)}
+                onChange={(event) => setKnowledgeFile(event.target.files?.[0] || null)}
               />
             </label>
             <div className="form-hint">

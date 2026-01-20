@@ -11,6 +11,12 @@
   z-index: 20;
 }
 
+.header-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .title {
   display: inline-flex;
   align-items: center;
@@ -20,6 +26,12 @@
   letter-spacing: -0.02em;
   color: var(--text);
   font-family: "Fira Code", "Fira Sans", sans-serif;
+}
+
+.back-button {
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 999px;
 }
 
 .title img {
