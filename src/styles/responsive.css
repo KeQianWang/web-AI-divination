@@ -91,9 +91,8 @@
     border-radius: 0;
     height: 100%;
   }
-}
 
-@media (max-width: 600px) {
+  /* 第二个媒体查询的样式 */
   .app-header {
     padding: 14px 16px 8px;
     gap: 8px;
@@ -154,6 +153,7 @@
 
   .knowledge-header {
     flex-wrap: wrap;
+    gap: 0;
   }
 
   .knowledge-header h3 {
@@ -186,5 +186,4 @@
   .composer-row button {
     width: 100%;
   }
-
 }
