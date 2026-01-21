@@ -32,68 +32,214 @@
   padding: 0;
 }
 
-.home-hero {
+.home-page {
+  gap: 0;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: clamp(16px, 3vh, 28px) clamp(16px, 4vw, 32px);
+}
+
+.home-shell {
+  width: min(1100px, 100%);
+  margin: 0 auto;
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  flex: 1;
+  min-height: 0;
+  align-items: center;
+  justify-content: center;
 }
 
-.home-hero h1 {
-  margin: 0;
-  font-size: 28px;
-  font-weight: 700;
-}
-
-.home-hero p {
-  margin: 0;
-  color: var(--muted);
-}
-
-.card-grid {
+.home-bento {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 18px;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(16px, 2vw, 24px);
+  align-items: center;
+  align-content: center;
+  width: 100%;
 }
 
-.feature-card {
-  text-align: left;
+.lunar-card {
+  position: relative;
+  border-radius: 20px;
+  padding: 20px 22px;
+  background: rgba(255, 255, 255, 0.72);
   border: 1px solid rgba(255, 255, 255, 0.65);
-  border-radius: 18px;
-  padding: 18px 18px 16px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.38));
-  backdrop-filter: blur(24px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(140%);
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+  gap: 12px;
+  min-height: clamp(180px, 28vh, 240px);
 }
 
-.feature-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+.lunar-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
 }
 
-.feature-card:active {
-  transform: scale(0.98);
-  opacity: 0.92;
+.lunar-date {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lunar-date-main {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #0f172a;
+}
+
+.lunar-date-sub {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.lunar-week {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #475569;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.lunar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+  font-size: 13px;
+  color: #475569;
+}
+
+.lunar-row-label {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.lunar-row-value {
+  font-weight: 600;
+  color: #1f2937;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lunar-note {
+  margin-top: auto;
+  font-size: 13px;
+  color: #64748b;
+  border-top: 1px dashed rgba(148, 163, 184, 0.35);
+  padding-top: 10px;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 1.6vw, 18px);
+  height: clamp(280px, 48vh, 440px);
+  align-content: center;
+}
+
+.feature-card {
+  position: relative;
+  text-align: left;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 18px;
+  padding: 18px 56px 18px 20px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  min-height: 0;
+  height: 100%;
+  isolation: isolate;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.feature-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+  z-index: 1;
 }
 
 .feature-title {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 600;
+  color: #1f2937;
 }
 
 .feature-subtitle {
-  color: var(--muted);
-  font-size: 13px;
+  color: #666666;
+  font-size: 12px;
 }
 
-.feature-action {
-  margin-top: auto;
-  font-size: 12px;
-  color: var(--primary-strong);
-  font-weight: 600;
+.feature-icon {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  opacity: 0.06;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.feature-icon--daily {
+  background: radial-gradient(circle at 35% 35%, rgba(168, 150, 255, 0.9), rgba(168, 150, 255, 0.2));
+}
+
+.feature-icon--bazi {
+  background: radial-gradient(circle at 35% 35%, rgba(125, 161, 204, 0.9), rgba(125, 161, 204, 0.2));
+}
+
+.feature-icon--dream {
+  background: radial-gradient(circle at 35% 35%, rgba(125, 194, 168, 0.9), rgba(125, 194, 168, 0.2));
+}
+
+.feature-icon--chat {
+  background: radial-gradient(circle at 35% 35%, rgba(203, 145, 176, 0.9), rgba(203, 145, 176, 0.2));
+}
+
+.feature-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: rgba(148, 163, 184, 0.55);
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.feature-card:hover .feature-title {
+  color: #0f172a;
+}
+
+.feature-card:active {
+  box-shadow: var(--shadow-sm);
+}
+
+.feature-card--daily {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(238, 236, 255, 0.7));
+  border-color: rgba(148, 139, 255, 0.35);
+}
+
+.feature-card--daily .feature-title {
+  font-size: 17px;
 }
 
 .feature-page .feature-hero h1 {
@@ -119,3 +265,71 @@
   margin-top: 0;
   margin-bottom: 8px;
 }
+
+@media (max-width: 1023px) {
+  .home-bento {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: 18px;
+  }
+
+  .feature-grid {
+    height: clamp(260px, 44vh, 380px);
+  }
+
+  .lunar-card {
+    min-height: clamp(180px, 28vh, 220px);
+  }
+
+  .feature-title {
+    font-size: 16px;
+  }
+
+  .feature-subtitle {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 767px) {
+  .home-bento {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
+  .feature-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(4, minmax(0, auto));
+    height: auto;
+  }
+
+  .feature-card {
+    min-height: 0;
+  }
+
+  .lunar-card {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 520px) {
+  .lunar-header {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .lunar-date-main {
+    font-size: 22px;
+  }
+
+  .lunar-row {
+    font-size: 12px;
+  }
+
+  .lunar-row-label {
+    font-size: 10px;
+  }
+
+  .lunar-note {
+    font-size: 12px;
+  }
+}
+

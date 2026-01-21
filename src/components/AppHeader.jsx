@@ -42,17 +42,17 @@ export default function AppHeader() {
   return (
     <header className="app-header">
       <div className="header-left">
-        {showBack && (
-          <button type="button" className="ghost back-button" onClick={goHome}>
-            返回首页
-          </button>
-        )}
         <div className="title">
           <img src="/hero.png" alt="" aria-hidden="true" />
           <span>信我么</span>
         </div>
       </div>
       <div className="header-actions">
+        {showBack && (
+            <button type="button" className="ghost back-button" onClick={goHome}>
+              返回首页
+            </button>
+        )}
         <div className="user-menu" ref={userMenuRef}>
           <button
             type="button"

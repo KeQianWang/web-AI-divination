@@ -205,12 +205,4 @@
   .chat-page {
     padding: 0;
   }
-
-  .home-hero h1 {
-    font-size: 22px;
-  }
-
-  .card-grid {
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  }
 }
