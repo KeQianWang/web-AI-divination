@@ -128,3 +128,55 @@
 .dropdown button:hover {
   background: var(--primary-soft);
 }
+
+@media (max-width: 900px) {
+  .app-header {
+    padding: 14px 16px 8px;
+    gap: 8px;
+    flex-wrap: nowrap;
+  }
+
+  .header-left {
+    gap: 8px;
+  }
+
+  .back-button {
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+
+  .title {
+    font-size: 18px;
+    flex: 0 0 auto;
+  }
+
+  .title img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .header-actions {
+    flex: 1;
+    min-width: 0;
+    justify-content: flex-end;
+  }
+
+  .user-button {
+    padding: 4px 8px;
+    font-size: 12px;
+    max-width: 50vw;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .user-button span {
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .user-button::after {
+    font-size: 10px;
+  }
+}

@@ -69,3 +69,19 @@
   border-color: rgba(59, 130, 246, 0.6);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.16);
 }
+
+@media (max-width: 900px) {
+  .knowledge-header {
+    flex-wrap: wrap;
+    gap: 0;
+  }
+
+  .knowledge-header h3 {
+    white-space: nowrap;
+  }
+
+  .knowledge-header .toggle {
+    width: auto;
+    white-space: nowrap;
+  }
+}

@@ -191,3 +191,33 @@
   padding: 10px 16px;
   white-space: nowrap;
 }
+
+@media (max-width: 900px) {
+  .chat-panel {
+    order: 1;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .message-bubble {
+    max-width: 100%;
+  }
+
+  .chat-header-actions .toggle {
+    width: auto;
+    white-space: nowrap;
+  }
+
+  .messages {
+    padding-right: 0;
+  }
+
+  .composer-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .composer-row button {
+    width: 100%;
+  }
+}

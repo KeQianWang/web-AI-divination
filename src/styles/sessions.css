@@ -155,3 +155,9 @@
 .session-menu-item.danger:focus-visible {
   background: rgba(239, 68, 68, 0.12);
 }
+
+@media (max-width: 900px) {
+  .sessions-panel {
+    order: 2;
+  }
+}
