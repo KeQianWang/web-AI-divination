@@ -151,20 +151,6 @@ export const streamChat = async ({ token, query, sessionId, enableTts, onToken, 
     throw error;
   }
 
-  const contentType = response.headers.get('content-type') || '';
-  if (!contentType.includes('text/event-stream')) {
-    const data = unwrapPayload(await response.json());
-    const content = data?.response || data?.content || '';
-    if (content) {
-      onToken?.(content);
-    }
-    onDone?.({
-      session_id: data?.session_id || sessionId,
-      audio_url: data?.audio_url || null
-    });
-    return;
-  }
-
   const reader = response.body.getReader();
   const decoder = new TextDecoder();
   let buffer = '';
@@ -172,9 +158,7 @@ export const streamChat = async ({ token, query, sessionId, enableTts, onToken, 
 
   while (true) {
     const { done, value } = await reader.read();
-    if (done) {
-      break;
-    }
+    if (done) break;
 
     buffer += decoder.decode(value, { stream: true });
     const lines = buffer.split('\n');
@@ -182,49 +166,38 @@ export const streamChat = async ({ token, query, sessionId, enableTts, onToken, 
 
     for (const line of lines) {
       const trimmed = line.trim();
-      if (!trimmed.startsWith('data:')) {
-        continue;
-      }
+      if (!trimmed.startsWith('data:')) continue;
+
       const jsonText = trimmed.replace(/^data:\s*/, '');
-      if (!jsonText) {
-        continue;
-      }
+      if (!jsonText) continue;
       if (jsonText === '[DONE]' || jsonText === 'DONE') {
         onDone?.({ session_id: sessionId || null, audio_url: null });
         continue;
       }
+
       const payload = parseSsePayload(jsonText);
-      if (!payload) {
-        const plainText = jsonText.trim();
-        if (plainText && !plainText.startsWith('{') && !plainText.startsWith('[')) {
-          didStreamContent = true;
-          onToken?.(plainText);
-        }
-        continue;
-      }
-      if (payload.type === 'token' || payload.type === 'content') {
-        const chunk = payload.content || payload.response || '';
+      if (!payload) continue;
+
+      if (payload.type === 'content') {
+        const chunk = payload.content || '';
         if (chunk) {
           didStreamContent = true;
           onToken?.(chunk);
         }
-      } else if (payload.type === 'done' || payload.type === 'complete') {
-        const finalContent = payload.content || payload.response || '';
+        continue;
+      }
+
+      if (payload.type === 'complete') {
+        const finalContent = payload.content || '';
         if (finalContent && !didStreamContent) {
           didStreamContent = true;
           onToken?.(finalContent);
         }
         onDone?.(payload);
-      } else if (payload.content || payload.response) {
-        const chunk = payload.content || payload.response || '';
-        if (chunk) {
-          didStreamContent = true;
-          onToken?.(chunk);
-        }
-        if (payload.audio_url) {
-          onDone?.(payload);
-        }
-      } else if (payload.audio_url) {
+        continue;
+      }
+
+      if (payload.audio_url) {
         onDone?.(payload);
       }
     }

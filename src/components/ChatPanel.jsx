@@ -131,7 +131,7 @@ export default function ChatPanel({ onOpenSessions, onOpenKnowledge }) {
               }}
             />
             <button type="button" className="primary" onClick={() => sendMessage()}>
-              {isStreaming ? '发送中...' : '发送'}
+              {isStreaming ? '解惑中...' : '发送'}
             </button>
           </div>
           {chatError && <div className="form-hint error">{chatError}</div>}

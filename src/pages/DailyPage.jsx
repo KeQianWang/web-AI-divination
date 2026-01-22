@@ -119,15 +119,15 @@ export default function DailyPage() {
             <label className="daily-label" htmlFor="daily-question">
               所问之事
             </label>
-            <input
+            <textarea
               ref={inputRef}
               id="daily-question"
-              type="text"
               className="daily-input"
               value={question}
               onChange={(event) => setQuestion(event.target.value)}
               placeholder="请输入所问之事，心中默念三遍后开始卜卦"
               disabled={loading}
+              rows={4}
             />
             <div className="daily-hot">
               <span className="daily-hot-label">热门问卦</span>
