@@ -13,6 +13,7 @@ export default function ChatPage() {
   const bootstrap = useChatStore((state) => state.bootstrap);
   const sessionsList = useChatStore((state) => state.sessionsList);
   const activeSessionId = useChatStore((state) => state.activeSessionId);
+  const messagesSessionId = useChatStore((state) => state.messagesSessionId);
   const setActiveSessionId = useChatStore((state) => state.setActiveSessionId);
   const loadHistory = useChatStore((state) => state.loadHistory);
   const loadKnowledgeSources = useChatStore((state) => state.loadKnowledgeSources);
@@ -59,8 +60,9 @@ export default function ChatPage() {
 
   useEffect(() => {
     if (!token || !activeSessionId) return;
+    if (messagesSessionId === activeSessionId) return;
     loadHistory(activeSessionId).catch(() => {});
-  }, [token, activeSessionId, loadHistory]);
+  }, [token, activeSessionId, messagesSessionId, loadHistory]);
 
   useEffect(() => {
     if (!activeSessionId) {

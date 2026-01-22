@@ -13,6 +13,7 @@ import useUserStore from './useUserStore';
 const initialState = {
   sessionsList: [],
   activeSessionId: '',
+  messagesSessionId: '',
   messages: [],
   chatInput: '',
   chatError: '',
@@ -131,7 +132,7 @@ const useChatStore = create((set, get) => ({
     if (!sessionId) return;
     const token = getToken();
     if (!token) return;
-    set({ historyLoading: true, chatError: '', messages: [] });
+    set({ historyLoading: true, chatError: '', messages: [], messagesSessionId: sessionId });
     stopTyping();
     try {
       const data = await chat.history(token, sessionId);
@@ -166,7 +167,7 @@ const useChatStore = create((set, get) => ({
       const sessionPayload = resolveSessionPayload(result);
       const sessionId = getSessionId(sessionPayload);
       await get().refreshSessions();
-      set({ activeSessionId: sessionId, messages: [] });
+      set({ activeSessionId: sessionId, messages: [], messagesSessionId: sessionId });
       return sessionId;
     } catch (error) {
       handleAuthError(error);
@@ -190,7 +191,7 @@ const useChatStore = create((set, get) => ({
       await sessions.remove(token, sessionId);
       await get().refreshSessions();
       if (get().activeSessionId === sessionId) {
-        set({ activeSessionId: '', messages: [] });
+        set({ activeSessionId: '', messages: [], messagesSessionId: '' });
         get().clearKnowledgeSources();
       }
     } catch (error) {
@@ -219,8 +220,11 @@ const useChatStore = create((set, get) => ({
           set({ chatError: '创建会话失败。' });
           return;
         }
-        set({ activeSessionId: currentSessionId, messages: [] });
-        await get().refreshSessions();
+        set({
+          activeSessionId: currentSessionId,
+          messages: [],
+          messagesSessionId: currentSessionId
+        });
       } catch (error) {
         handleAuthError(error);
         set({ chatError: error.message || '创建会话失败。' });
@@ -245,7 +249,8 @@ const useChatStore = create((set, get) => ({
 
     set((state) => ({
       messages: [...state.messages, userMessage, assistantMessage],
-      isStreaming: true
+      isStreaming: true,
+      messagesSessionId: currentSessionId
     }));
 
     const fetchLatestMood = async (sessionId) => {
@@ -291,7 +296,10 @@ const useChatStore = create((set, get) => ({
             fetchLatestMood(nextSessionId);
           }
           if (payload.session_id && payload.session_id !== currentSessionId) {
-            set({ activeSessionId: payload.session_id });
+            set({
+              activeSessionId: payload.session_id,
+              messagesSessionId: payload.session_id
+            });
           }
         }
       });
