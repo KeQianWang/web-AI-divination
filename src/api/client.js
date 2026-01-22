@@ -104,7 +104,8 @@ export const chat = {
   history: (token, sessionId) =>
     request(`/chat/history?session_id=${encodeURIComponent(sessionId)}&skip=0&limit=50`, { token }),
   stats: (token) => request('/chat/stats', { token }),
-  recent: (token, days = 7) => request(`/chat/recent?days=${days}`, { token })
+  recent: (token, days = 7) => request(`/chat/recent?days=${days}`, { token }),
+  send: (token, payload) => request('/chat', { method: 'POST', token, body: payload })
 };
 
 export const knowledge = {
