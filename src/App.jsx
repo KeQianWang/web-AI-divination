@@ -10,6 +10,7 @@ export default function App() {
   const syncRoute = useAppStore((state) => state.syncRoute);
   const token = useUserStore((state) => state.token);
   const user = useUserStore((state) => state.user);
+  const profileLoading = useUserStore((state) => state.profileLoading);
   const loadProfile = useUserStore((state) => state.loadProfile);
 
   useEffect(() => {
@@ -17,9 +18,9 @@ export default function App() {
   }, [location.pathname, syncRoute]);
 
   useEffect(() => {
-    if (!token || user) return;
+    if (!token || user || profileLoading) return;
     loadProfile().catch(() => {});
-  }, [token, user, loadProfile]);
+  }, [token, user, loadProfile, profileLoading]);
 
   return (
     <div className="app">
