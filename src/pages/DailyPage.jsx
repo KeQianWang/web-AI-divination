@@ -1,4 +1,5 @@
 import React from 'react';
+import './DailyPage.less';
 
 export default function DailyPage() {
   return (

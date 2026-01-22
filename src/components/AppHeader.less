@@ -1,3 +1,24 @@
+.ghost {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.4));
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 10px;
+  color: var(--text);
+  transition: border-color 0.2s ease, background 0.2s ease;
+  backdrop-filter: blur(18px) saturate(150%);
+}
+
+.ghost:hover {
+  border-color: rgba(59, 130, 246, 0.4);
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.ghost.danger {
+  color: #b91c1c;
+  border-color: rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.08);
+}
+
 .app-header {
   padding: 12px 28px 10px;
   display: flex;
@@ -38,11 +59,6 @@
   width: 22px;
   height: 22px;
   object-fit: contain;
-}
-
-.subtitle {
-  font-size: 12px;
-  color: var(--muted);
 }
 
 .header-actions {

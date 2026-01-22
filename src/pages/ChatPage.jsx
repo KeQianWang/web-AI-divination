@@ -5,6 +5,7 @@ import SessionsPanel from '../components/SessionsPanel';
 import useChatStore from '../store/useChatStore';
 import useUserStore from '../store/useUserStore';
 import { getSessionId } from '../utils/resolve';
+import './ChatPage.less';
 
 export default function ChatPage() {
   const token = useUserStore((state) => state.token);

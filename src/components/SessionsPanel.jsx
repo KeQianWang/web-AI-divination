@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { formatMessageTime } from '../utils/formatters';
 import { getSessionId } from '../utils/resolve';
 import useChatStore from '../store/useChatStore';
+import './SessionsPanel.less';
 
 export default function SessionsPanel({ onClose }) {
   const sessions = useChatStore((state) => state.sessionsList);

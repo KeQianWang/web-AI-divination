@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import useUserStore from '../store/useUserStore';
 import { resolveAvatarSrc } from '../utils/formatters';
+import './ProfileModal.less';
 
 const emptyProfile = {
   username: '',

@@ -5,6 +5,7 @@ import useChatStore from '../store/useChatStore';
 import useUserStore from '../store/useUserStore';
 import { resolveAvatarSrc } from '../utils/formatters';
 import ProfileModal from './ProfileModal';
+import './AppHeader.less';
 
 export default function AppHeader() {
   const user = useUserStore((state) => state.user);

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useUserStore from '../store/useUserStore';
 import { ROUTES } from '../router/routes';
+import './AuthPage.less';
 
 const emptyAuthForm = {
   username: '',

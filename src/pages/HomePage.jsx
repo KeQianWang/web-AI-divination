@@ -2,6 +2,7 @@ import React from 'react';
 import useAppNavigation from '../hooks/useAppNavigation';
 import { HOME_CARDS } from '../router/routes';
 import { getHuangliData } from '../utils/huangli';
+import './HomePage.less';
 
 export default function HomePage() {
   const { goTo } = useAppNavigation();

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { formatMessageTime, resolveAudioUrl, resolveMoodEmoji } from '../utils/formatters';
 import useChatStore from '../store/useChatStore';
+import './ChatPanel.less';
 
 export default function ChatPanel({ onOpenSessions, onOpenKnowledge }) {
   const messages = useChatStore((state) => state.messages);

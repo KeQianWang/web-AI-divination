@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import AppHeader from './components/AppHeader';
 import useAppStore from './store/useAppStore';
 import useUserStore from './store/useUserStore';
+import './App.less';
 
 export default function App() {
   const location = useLocation();

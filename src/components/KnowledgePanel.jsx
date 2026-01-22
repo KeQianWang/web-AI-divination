@@ -1,5 +1,6 @@
 import React from 'react';
 import useChatStore from '../store/useChatStore';
+import './KnowledgePanel.less';
 
 export default function KnowledgePanel() {
   const knowledgeSources = useChatStore((state) => state.knowledgeSources);

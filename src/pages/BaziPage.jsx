@@ -1,4 +1,5 @@
 import React from 'react';
+import './BaziPage.less';
 
 export default function BaziPage() {
   return (
