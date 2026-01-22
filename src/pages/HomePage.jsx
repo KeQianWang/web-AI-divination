@@ -25,14 +25,24 @@ export default function HomePage() {
                 <span className="lunar-week">{huangli.weekLabel}</span>
               </div>
               <div className="lunar-row">
+                <span className="lunar-row-label">星座</span>
+                <span className="lunar-row-value">{huangli.xingZuo}座</span>
+              </div>
+              <div className="lunar-row">
                 <span className="lunar-row-label">干支 · 星宿</span>
                 <span className="lunar-row-value">{huangli.ganZhiXiu}</span>
               </div>
               <div className="lunar-row">
-                <span className="lunar-row-label">宜 / 忌</span>
-                <span className="lunar-row-value" title={huangli.yiJiFull}>
-                {huangli.yiJiText}
-              </span>
+                <span className="lunar-row-label">宜</span>
+                <span className="lunar-row-value">
+                {huangli.yiText}
+                </span>
+              </div>
+              <div className="lunar-row">
+                <span className="lunar-row-label">忌</span>
+                <span className="lunar-row-value">
+                {huangli.jiText}
+                </span>
               </div>
               <div className="lunar-note">{huangli.note}</div>
             </div>

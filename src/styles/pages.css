@@ -130,7 +130,7 @@
   font-weight: 600;
   color: #1f2937;
   min-width: 0;
-  white-space: nowrap;
+  white-space: wrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -157,7 +157,7 @@
   text-align: left;
   border: 1px solid rgba(255, 255, 255, 0.7);
   border-radius: 18px;
-  padding: 18px 56px 18px 20px;
+  padding: 18px 47px 18px 20px;
   background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(16px) saturate(140%);
   box-shadow: var(--shadow-sm);
@@ -355,7 +355,7 @@
   .feature-grid {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: repeat(4, minmax(0, auto));
-    height: auto;
+    /*height: auto;*/
   }
 
   .feature-card {
@@ -364,6 +364,7 @@
 
   .lunar-card {
     min-height: auto;
+    gap: 2px;
   }
 }
 

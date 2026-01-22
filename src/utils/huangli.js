@@ -16,8 +16,9 @@ const normalizeList = (value) => {
 
 const formatList = (items, max) => {
     if (!items.length) return '暂无';
-    const sliced = items.slice(0, max);
-    const text = sliced.join('、');
+    // const sliced = items.slice(0, max);
+    // const text = sliced.join('、');
+    const text = items.join('、');
     return items.length > max ? `${text}` : text;
 };
 
@@ -70,16 +71,16 @@ export const getHuangliData = (date = new Date()) => {
     const ji = normalizeList(lunar.getDayJi());
     const yiText = formatList(yi, 4);
     const jiText = formatList(ji, 4);
-    const yiFull = yi.join('、') || '暂无';
-    const jiFull = ji.join('、') || '暂无';
+    const xingZuo = solar.getXingzuo()
 
     return {
         solarDate,
         lunarDateSub,
         weekLabel,
         ganZhiXiu,
-        yiJiText: `${yiText} ｜ ${jiText}`,
-        yiJiFull: `${yiFull} ｜ ${jiFull}`,
+        yiText ,
+        jiText ,
+        xingZuo,
         note: buildSummary(yi, ji),
     };
 };
