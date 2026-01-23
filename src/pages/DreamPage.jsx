@@ -62,7 +62,7 @@ export default function DreamPage() {
     });
     try {
       const data = await chat.send(token, {
-        query: `解梦:做梦时间:${timeLabel}，梦境内容:${trimmed}`,
+        query: `梦境内容:${trimmed},做梦时间:${timeLabel}`,
         enable_tts: false,
         async_mode: false,
         session_id: 'DreamPage'
