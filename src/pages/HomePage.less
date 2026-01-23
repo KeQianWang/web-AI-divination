@@ -20,9 +20,10 @@
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   gap: clamp(16px, 2vw, 24px);
-  align-items: center;
+  align-items: stretch;
   align-content: center;
   width: 100%;
+  height: clamp(300px, 48vh, 440px);
 }
 
 .lunar-card {
@@ -36,7 +37,8 @@
   display: flex;
   flex-direction: column;
   gap: 18px;
-  min-height: clamp(180px, 28vh, 240px);
+  height: 100%;
+  min-height: 0;
 }
 
 .lunar-header {
@@ -114,7 +116,7 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   grid-template-rows: repeat(2, minmax(0, 1fr));
   gap: clamp(12px, 1.6vw, 18px);
-  height: clamp(280px, 48vh, 440px);
+  height: 100%;
   align-content: center;
 }
 
@@ -212,14 +214,15 @@
   .home-bento {
     grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
     gap: 18px;
-  }
-
-  .feature-grid {
     height: clamp(260px, 44vh, 380px);
   }
 
+  .feature-grid {
+    height: 100%;
+  }
+
   .lunar-card {
-    min-height: clamp(180px, 28vh, 220px);
+    height: 100%;
   }
 
   .feature-title {
@@ -235,11 +238,13 @@
   .home-bento {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto minmax(0, 1fr);
+    height: auto;
   }
 
   .feature-grid {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: repeat(4, minmax(0, auto));
+    height: auto;
   }
 
   .feature-card {
@@ -247,7 +252,7 @@
   }
 
   .lunar-card {
-    min-height: auto;
+    height: auto;
     gap: 2px;
   }
 }

@@ -131,7 +131,8 @@ export default function BaziPage() {
 
   return (
     <section className="page bazi-page">
-      <div className="bazi-layout">
+      <div className="bazi-shell">
+        <div className="bazi-layout">
         <aside className="bazi-card bazi-principles">
           <div className="bazi-card-header">
             <h2>测算原则</h2>
@@ -372,6 +373,7 @@ export default function BaziPage() {
             </div>
           </div>
         )}
+        </div>
       </div>
       {loading && (
         <div className="bazi-overlay" role="status" aria-live="polite">

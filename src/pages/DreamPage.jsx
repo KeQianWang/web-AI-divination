@@ -62,7 +62,7 @@ export default function DreamPage() {
     });
     try {
       const data = await chat.send(token, {
-        query: `梦境内容:${trimmed},做梦时间:${timeLabel}`,
+        query: `我想要解梦,梦境内容:${trimmed};做梦时间:${timeLabel}`,
         enable_tts: false,
         async_mode: false,
         session_id: 'DreamPage'
@@ -92,7 +92,8 @@ export default function DreamPage() {
 
   return (
     <section className="page dream-page">
-      <div className="dream-layout">
+      <div className="dream-shell">
+        <div className="dream-layout">
         <aside className="dream-card dream-principles">
           <div className="dream-card-header">
             <h2>解梦提示</h2>
@@ -189,6 +190,7 @@ export default function DreamPage() {
             </div>
           </div>
         )}
+        </div>
       </div>
       {loading && (
         <div className="dream-overlay" role="status" aria-live="polite">

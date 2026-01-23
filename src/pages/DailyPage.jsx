@@ -94,7 +94,8 @@ export default function DailyPage() {
 
   return (
     <section className="page daily-page">
-      <div className="daily-layout">
+      <div className="daily-shell">
+        <div className="daily-layout">
         <aside className="daily-card daily-principles">
           <div className="daily-card-header">
             <h2>卜卦原则</h2>
@@ -185,6 +186,7 @@ export default function DailyPage() {
             </div>
           </div>
         )}
+        </div>
       </div>
       {loading && (
         <div className="daily-overlay" role="status" aria-live="polite">
