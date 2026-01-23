@@ -14,7 +14,7 @@
   flex: 1;
   display: grid;
   gap: clamp(16px, 2vw, 24px);
-  align-content: center;
+  align-content: start;
 }
 
 .daily-card {
@@ -297,6 +297,10 @@
 }
 
 @media (max-width: 767px) {
+  .daily-layout {
+    align-content: start;
+  }
+
   .daily-card {
     padding: 14px 16px;
   }

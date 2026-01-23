@@ -14,7 +14,7 @@
   flex: 1;
   display: grid;
   gap: clamp(16px, 2vw, 24px);
-  align-content: center;
+  align-content: start;
 }
 
 .bazi-card {
@@ -332,6 +332,10 @@
 }
 
 @media (max-width: 767px) {
+  .bazi-layout {
+    align-content: start;
+  }
+
   .bazi-card {
     padding: 14px 16px;
   }
