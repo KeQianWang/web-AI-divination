@@ -35,6 +35,7 @@ export default function DailyPage() {
   const inputRef = useRef(null);
   const [activePrinciple, setActivePrinciple] = useState(null);
   const [question, setQuestion] = useState('');
+  const [askedQuestion, setAskedQuestion] = useState('');
   const [result, setResult] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -64,6 +65,7 @@ export default function DailyPage() {
     setLoading(true);
     setError('');
     setResult('');
+    setAskedQuestion(trimmed);
     try {
       const data = await chat.send(token, {
         query: '来一卦:'+trimmed,
@@ -79,6 +81,16 @@ export default function DailyPage() {
       setLoading(false);
     }
   };
+
+  const handleRetry = () => {
+    setQuestion('');
+    setAskedQuestion('');
+    setResult('');
+    setError('');
+    requestAnimationFrame(() => inputRef.current?.focus());
+  };
+
+  const showResult = Boolean(result);
 
   return (
     <section className="page daily-page">
@@ -110,53 +122,69 @@ export default function DailyPage() {
             })}
           </div>
         </aside>
-        <div className="daily-card daily-consult">
-          <div className="daily-card-header">
-            <h2>今日所问</h2>
-            <span>一事一占，专注当下</span>
-          </div>
-          <div className="daily-consult-body">
-            <label className="daily-label" htmlFor="daily-question">
-              所问之事
-            </label>
-            <textarea
-              ref={inputRef}
-              id="daily-question"
-              className="daily-input"
-              value={question}
-              onChange={(event) => setQuestion(event.target.value)}
-              placeholder="请输入所问之事，心中默念三遍后开始卜卦"
-              disabled={loading}
-              rows={4}
-            />
-            <div className="daily-hot">
-              <span className="daily-hot-label">热门问卦</span>
-              <div className="daily-hot-list">
-                {HOT_QUESTIONS.map((item) => (
-                  <button
-                    type="button"
-                    key={item}
-                    className="daily-hot-item"
-                    onClick={() => handlePickHot(item)}
-                    disabled={loading}
-                  >
-                    {item}
-                  </button>
-                ))}
+        {showResult ? (
+          <div className="daily-card daily-result-card">
+            <div className="daily-result-section">
+              <div className="daily-result-title">所问之事</div>
+              <div className="daily-result-block">
+                <p className="daily-result-question">{askedQuestion || question}</p>
               </div>
             </div>
-            {error && <div className="daily-error">{error}</div>}
-            <button type="button" className="primary daily-action" onClick={handleStart} disabled={loading}>
-              {loading ? '卜卦进行中…' : '开始卜卦'}
-            </button>
-            {result && (
-              <div className="daily-result" aria-live="polite">
-                <div className="daily-result-title">卦象解读</div>
-                <p>{result}</p>
+            <div className="daily-result-section" aria-live="polite">
+              <div className="daily-result-title">卦象解读</div>
+              <div className="daily-result-block daily-result-interpretation">
+                <p className="daily-result-text">{result}</p>
               </div>
-            )}
+            </div>
+            <button
+              type="button"
+              className="primary daily-action daily-retry"
+              onClick={handleRetry}
+              disabled={loading}
+            >
+              再来一卦
+            </button>
           </div>
-        </div>
+        ) : (
+          <div className="daily-card daily-consult">
+            <div className="daily-card-header">
+              <h2>今日所问</h2>
+              <span>一事一占，专注当下</span>
+            </div>
+            <div className="daily-consult-body">
+              <textarea
+                ref={inputRef}
+                id="daily-question"
+                className="daily-input"
+                value={question}
+                onChange={(event) => setQuestion(event.target.value)}
+                placeholder="请输入所问之事，心中默念三遍后开始卜卦"
+                disabled={loading}
+                rows={4}
+              />
+              <div className="daily-hot">
+                <span className="daily-hot-label">热门问卦</span>
+                <div className="daily-hot-list">
+                  {HOT_QUESTIONS.map((item) => (
+                    <button
+                      type="button"
+                      key={item}
+                      className="daily-hot-item"
+                      onClick={() => handlePickHot(item)}
+                      disabled={loading}
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              {error && <div className="daily-error">{error}</div>}
+              <button type="button" className="primary daily-action" onClick={handleStart} disabled={loading}>
+                {loading ? '卜卦进行中…' : '开始卜卦'}
+              </button>
+            </div>
+          </div>
+        )}
       </div>
       {loading && (
         <div className="daily-overlay" role="status" aria-live="polite">
