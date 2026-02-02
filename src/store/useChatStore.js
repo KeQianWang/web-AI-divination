@@ -16,6 +16,7 @@ const initialState = {
   messagesSessionId: '',
   messages: [],
   chatInput: '',
+  pendingContext: null, // 存储从其他页面带来的上下文信息
   chatError: '',
   historyLoading: false,
   isStreaming: false,
@@ -89,6 +90,9 @@ const useChatStore = create((set, get) => ({
   },
   setChatInput(value) {
     set({ chatInput: value });
+  },
+  setPendingContext(context) {
+    set({ pendingContext: context });
   },
   setTtsEnabled(value) {
     set({ ttsEnabled: value });

@@ -1,6 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { chat } from '../api/client';
 import useUserStore from '../store/useUserStore';
+import useChatStore from '../store/useChatStore';
+import useAppNavigation from '../hooks/useAppNavigation';
+import { ROUTES } from '../router/routes';
 import './BaziPage.less';
 
 const GUIDE_ITEMS = [
@@ -25,6 +28,8 @@ const formatBirth = (year, month, day, hour, minute) =>
 
 export default function BaziPage() {
   const token = useUserStore((state) => state.token);
+  const { setPendingContext } = useChatStore();
+  const { goTo } = useAppNavigation();
   const nameRef = useRef(null);
   const now = new Date();
   const [calendarType, setCalendarType] = useState('solar');
@@ -71,6 +76,14 @@ export default function BaziPage() {
   };
 
   const handleReset = () => {
+    setSubmittedInfo(null);
+    setResult('');
+    setError('');
+    // 保留上次输入，方便修改
+    requestAnimationFrame(() => nameRef.current?.focus());
+  };
+
+  const handleFullReset = () => {
     const fresh = new Date();
     setCalendarType('solar');
     setYear(fresh.getFullYear());
@@ -84,6 +97,15 @@ export default function BaziPage() {
     setResult('');
     setError('');
     requestAnimationFrame(() => nameRef.current?.focus());
+  };
+
+  const handleConsultMaster = () => {
+    const info = `姓名:${submittedInfo.name} 性别:${submittedInfo.gender} 生日:${submittedInfo.birth} (${submittedInfo.calendar})`;
+    setPendingContext({
+      type: '八字',
+      content: `用户信息：${info}\n测算结果：${result}`
+    });
+    goTo(ROUTES.chat.path);
   };
 
   const handleStart = async () => {
@@ -189,9 +211,14 @@ export default function BaziPage() {
                 <p className="bazi-result-text">{result}</p>
               </div>
             </div>
-            <button type="button" className="primary bazi-action" onClick={handleReset} disabled={loading}>
-              再来一次
-            </button>
+            <div className="bazi-result-actions">
+              <button type="button" className="secondary bazi-action" onClick={handleReset} disabled={loading}>
+                重新测算
+              </button>
+              <button type="button" className="primary bazi-action bazi-consult-btn" onClick={handleConsultMaster}>
+                详询大师
+              </button>
+            </div>
           </div>
         ) : (
           <div className="bazi-card ">

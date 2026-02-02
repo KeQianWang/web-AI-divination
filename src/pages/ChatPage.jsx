@@ -19,6 +19,10 @@ export default function ChatPage() {
   const loadKnowledgeSources = useChatStore((state) => state.loadKnowledgeSources);
   const clearKnowledgeSources = useChatStore((state) => state.clearKnowledgeSources);
   const stopTyping = useChatStore((state) => state.stopTyping);
+  const pendingContext = useChatStore((state) => state.pendingContext);
+  const setPendingContext = useChatStore((state) => state.setPendingContext);
+  const setChatInput = useChatStore((state) => state.setChatInput);
+  const sendMessage = useChatStore((state) => state.sendMessage);
 
   const [isMobile, setIsMobile] = useState(() => {
     if (typeof window === 'undefined') return false;
@@ -77,6 +81,22 @@ export default function ChatPage() {
       setActiveSessionId(getSessionId(sessionsList[0]));
     }
   }, [sessionsList, activeSessionId, setActiveSessionId]);
+
+  useEffect(() => {
+    if (pendingContext && token) {
+      // 如果有待处理的上下文，自动填充到输入框或者直接发送
+      // 这里我们选择填充到输入框让用户确认，或者直接作为新会话的开场白
+      // 为了更好的体验，我们可以创建一个新会话（如果当前没有特定会话）并带入上下文
+      
+      const { content, type } = pendingContext;
+      const contextPrefix = `【${type}续问】\n前情提要：${content}\n\n我的疑问是：`;
+      
+      setChatInput(contextPrefix);
+      
+      // 清除 pendingContext 以免重复触发
+      setPendingContext(null);
+    }
+  }, [pendingContext, token, setChatInput, setPendingContext]);
 
   useEffect(() => () => stopTyping(), [stopTyping]);
 

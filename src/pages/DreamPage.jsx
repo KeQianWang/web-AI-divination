@@ -1,6 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { chat } from '../api/client';
 import useUserStore from '../store/useUserStore';
+import useChatStore from '../store/useChatStore';
+import useAppNavigation from '../hooks/useAppNavigation';
+import { ROUTES } from '../router/routes';
 import './DreamPage.less';
 
 const GUIDE_ITEMS = [
@@ -27,6 +30,8 @@ const TIME_OPTIONS = [
 
 export default function DreamPage() {
   const token = useUserStore((state) => state.token);
+  const { setPendingContext } = useChatStore();
+  const { goTo } = useAppNavigation();
   const contentRef = useRef(null);
   const [activeGuide, setActiveGuide] = useState(null);
   const [content, setContent] = useState('');
@@ -85,6 +90,15 @@ export default function DreamPage() {
     requestAnimationFrame(() => contentRef.current?.focus());
   };
 
+  const handleConsultMaster = () => {
+    const timeInfo = submittedInfo?.timeLabel || '';
+    setPendingContext({
+      type: '解梦',
+      content: `梦境内容：${submittedInfo.content}\n做梦时间：${timeInfo}\n初步解读：${result}`
+    });
+    goTo(ROUTES.chat.path);
+  };
+
   const showResult = Boolean(result);
   const timeLabel =
     submittedInfo?.timeLabel || TIME_OPTIONS.find((item) => item.value === timeOption)?.label || '';
@@ -141,9 +155,14 @@ export default function DreamPage() {
                 <p className="dream-result-text">{result}</p>
               </div>
             </div>
-            <button type="button" className="primary dream-action" onClick={handleReset} disabled={loading}>
-              再解一次
-            </button>
+            <div className="dream-result-actions">
+              <button type="button" className="secondary dream-action" onClick={handleReset} disabled={loading}>
+                再解一次
+              </button>
+              <button type="button" className="primary dream-action dream-consult-btn" onClick={handleConsultMaster}>
+                深入请教大师
+              </button>
+            </div>
           </div>
         ) : (
           <div className="dream-card dream-form">

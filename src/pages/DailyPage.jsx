@@ -1,6 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { chat } from '../api/client';
 import useUserStore from '../store/useUserStore';
+import useChatStore from '../store/useChatStore';
+import useAppNavigation from '../hooks/useAppNavigation';
+import { ROUTES } from '../router/routes';
 import './DailyPage.less';
 
 const PRINCIPLES = [
@@ -32,6 +35,8 @@ const HOT_QUESTIONS = [
 
 export default function DailyPage() {
   const token = useUserStore((state) => state.token);
+  const { setPendingContext } = useChatStore();
+  const { goTo } = useAppNavigation();
   const inputRef = useRef(null);
   const [activePrinciple, setActivePrinciple] = useState(null);
   const [question, setQuestion] = useState('');
@@ -90,6 +95,14 @@ export default function DailyPage() {
     requestAnimationFrame(() => inputRef.current?.focus());
   };
 
+  const handleConsultMaster = () => {
+    setPendingContext({
+      type: '卜卦',
+      content: `问卜事项：${askedQuestion}\n卦象结果：${result}`
+    });
+    goTo(ROUTES.chat.path);
+  };
+
   const showResult = Boolean(result);
 
   return (
@@ -137,14 +150,23 @@ export default function DailyPage() {
                 <p className="daily-result-text">{result}</p>
               </div>
             </div>
-            <button
-              type="button"
-              className="primary daily-action daily-retry"
-              onClick={handleRetry}
-              disabled={loading}
-            >
-              再来一卦
-            </button>
+            <div className="daily-result-actions">
+              <button
+                type="button"
+                className="primary daily-action daily-retry"
+                onClick={handleRetry}
+                disabled={loading}
+              >
+                再来一卦
+              </button>
+              <button
+                type="button"
+                className="secondary daily-action daily-consult-btn"
+                onClick={handleConsultMaster}
+              >
+                大师解惑
+              </button>
+            </div>
           </div>
         ) : (
           <div className="daily-card daily-consult">
