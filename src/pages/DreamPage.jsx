@@ -107,7 +107,8 @@ export default function DreamPage() {
   return (
     <section className="page dream-page">
       <div className="dream-shell">
-        <div className="dream-layout">
+        <div className={`dream-layout ${showResult ? 'result-mode' : ''}`}>
+        {!showResult && (
         <aside className="dream-card dream-principles">
           <div className="dream-card-header">
             <h2>解梦提示</h2>
@@ -135,6 +136,7 @@ export default function DreamPage() {
             })}
           </div>
         </aside>
+        )}
         {showResult ? (
           <div className="dream-card dream-result-card">
             <div className="dream-result-section">

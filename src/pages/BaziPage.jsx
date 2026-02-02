@@ -154,7 +154,8 @@ export default function BaziPage() {
   return (
     <section className="page bazi-page">
       <div className="bazi-shell">
-        <div className="bazi-layout">
+        <div className={`bazi-layout ${showResult ? 'result-mode' : ''}`}>
+        {!showResult && (
         <aside className="bazi-card bazi-principles">
           <div className="bazi-card-header">
             <h2>测算原则</h2>
@@ -182,6 +183,7 @@ export default function BaziPage() {
             })}
           </div>
         </aside>
+        )}
         {showResult ? (
           <div className="bazi-card bazi-result-card">
             <div className="bazi-result-section">

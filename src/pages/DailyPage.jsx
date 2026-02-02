@@ -108,34 +108,36 @@ export default function DailyPage() {
   return (
     <section className="page daily-page">
       <div className="daily-shell">
-        <div className="daily-layout">
-        <aside className="daily-card daily-principles">
-          <div className="daily-card-header">
-            <h2>卜卦原则</h2>
-          </div>
-          <div className="principle-list">
-            {PRINCIPLES.map((item, index) => {
-              const isActive = activePrinciple === index;
-              return (
-                <div key={item.title} className={`principle-item ${isActive ? 'active' : ''}`}>
-                  <button
-                    type="button"
-                    className="principle-title"
-                    onClick={() => handleTogglePrinciple(index)}
-                    aria-expanded={isActive}
-                    aria-controls={`principle-detail-${index}`}
-                  >
-                    <span>{item.title}</span>
-                    <span className="principle-toggle" aria-hidden="true" />
-                  </button>
-                  <div id={`principle-detail-${index}`} className="principle-detail">
-                    {item.detail}
+        <div className={`daily-layout ${showResult ? 'result-mode' : ''}`}>
+        {!showResult && (
+          <aside className="daily-card daily-principles">
+            <div className="daily-card-header">
+              <h2>卜卦原则</h2>
+            </div>
+            <div className="principle-list">
+              {PRINCIPLES.map((item, index) => {
+                const isActive = activePrinciple === index;
+                return (
+                  <div key={item.title} className={`principle-item ${isActive ? 'active' : ''}`}>
+                    <button
+                      type="button"
+                      className="principle-title"
+                      onClick={() => handleTogglePrinciple(index)}
+                      aria-expanded={isActive}
+                      aria-controls={`principle-detail-${index}`}
+                    >
+                      <span>{item.title}</span>
+                      <span className="principle-toggle" aria-hidden="true" />
+                    </button>
+                    <div id={`principle-detail-${index}`} className="principle-detail">
+                      {item.detail}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        </aside>
+                );
+              })}
+            </div>
+          </aside>
+        )}
         {showResult ? (
           <div className="daily-card daily-result-card">
             <div className="daily-result-section">
